@@ -1,0 +1,35 @@
+
+pkgname=bali_draw
+pkgver=1.0
+pkgrel=1
+pkgdesc="A minimalist Python Qt Web browser"
+arch=('any')
+license=('MIT')
+depends=('tk' 'python')
+source=()
+md5sums=()
+
+build() {
+    cd "$srcdir"
+    echo "Nothing to build."
+}
+
+package() {
+    mkdir -p "$pkgdir/usr/bin"
+    mkdir -p "$pkgdir/usr/share/applications"
+    mkdir -p "$pkgdir/usr/share/icons/hicolor/128x128/apps"
+
+    # Script launcher
+    echo -e "#!/bin/bash\npython3 /usr/share/bali/__main__.py" > "$pkgdir/usr/bin/bali_draw"
+    chmod +x "$pkgdir/usr/bin/bali_draw"
+
+    # Copy Python app
+   cp -r "$srcdir/bali" "$pkgdir/usr/share/"
+
+    # Desktop entry
+    cp "$srcdir/bali/resources/bali.desktop" "$pkgdir/usr/share/applications/"
+
+    # Icon
+    cp "$srcdir/bali/resources/bali.png" "$pkgdir/usr/share/icons/hicolor/128x128/apps/bali.png"
+}
+
