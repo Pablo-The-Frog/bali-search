@@ -1,21 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>PATHETIC</title>
-    <style>
-        body {
-            background-color: black;
-            color: red;
-            font-family: monospace;
-            text-align: center;
-            padding-top: 20%;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>PATHETIQUE</title>
+<style>
+    body {
+        background-color: black;
+        color: red;
+        font-family: monospace;
+        text-align: center;
+        padding: 10%;
+        animation: shake 0.2s infinite;
+    }
+
+    @keyframes shake {
+        0% { transform: translate(1px, 1px); }
+        50% { transform: translate(-1px, -2px); }
+        100% { transform: translate(1px, -1px); }
+    }
+
+    .insult {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+
+    .timer {
+        font-size: 20px;
+        color: orange;
+        margin-bottom: 30px;
+    }
+
+    button {
+        padding: 15px;
+        margin: 10px;
+        font-size: 18px;
+        background-color: darkred;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: red;
+    }
+</style>
 </head>
+
 <body>
-    <h1>Bravo.</h1>
-    <p>Tu étais censé apprendre quelque chose.</p>
-    <p>Mais non. Te voilà encore en train de consommer comme un zombie.</p>
-    <p>Retourne bosser. Maintenant.</p>
+
+<h1>STOP.</h1>
+
+<div class="insult" id="insult"></div>
+
+<div class="timer" id="timer"></div>
+
+<button onclick="goToMath()">Retourne faire des maths</button>
+<button onclick="goToPhysics()">Retourne faire de la physique</button>
+
+<script>
+const insults = [
+"Bravo. Tu viens encore de choisir la facilité.",
+"Tu voulais être dangereux ? Là t’es juste pathétique.",
+"Ton toi du futur te méprise.",
+"Tu construis rien. Tu consommes.",
+"Encore une vidéo inutile. Impressionnant.",
+"Tu fuis parce que c’est dur. Classique.",
+"Pendant que tu scroll, quelqu’un bosse à ta place.",
+"Tu crois que ça te rapproche de ton rêve ? Spoiler : non.",
+"T’avais un labo. T’as choisi YouTube.",
+"Dis-moi, ça fait quoi d’abandonner lentement ?"
+];
+
+function randomInsult() {
+    const random = insults[Math.floor(Math.random() * insults.length)];
+    document.getElementById("insult").innerText = random;
+}
+
+let seconds = 0;
+
+function updateTimer() {
+    seconds++;
+    document.getElementById("timer").innerText =
+        "Temps perdu aujourd'hui : " + seconds + " secondes";
+}
+
+function goToMath() {
+    window.location.href = "https://example.com/maths"; // remplace
+}
+
+function goToPhysics() {
+    window.location.href = "https://example.com/physics"; // remplace
+}
+
+randomInsult();
+setInterval(updateTimer, 1000);
+
+// son humiliant optionnel
+const audio = new Audio("https://www.soundjay.com/button/beep-10.mp3");
+audio.play();
+</script>
+
 </body>
 </html>
