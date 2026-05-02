@@ -1,68 +1,15 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>PATHETIQUE</title>
-<style>
-    body {
-        background-color: black;
-        color: red;
-        font-family: monospace;
-        text-align: center;
-        padding: 10%;
-        animation: shake 0.2s infinite;
-    }
-
-    @keyframes shake {
-        0% { transform: translate(1px, 1px); }
-        50% { transform: translate(-1px, -2px); }
-        100% { transform: translate(1px, -1px); }
-    }
-
-    .insult {
-        font-size: 28px;
-        margin-bottom: 30px;
-    }
-
-    .timer {
-        font-size: 20px;
-        color: orange;
-        margin-bottom: 30px;
-    }
-
-    button {
-        padding: 15px;
-        margin: 10px;
-        font-size: 18px;
-        background-color: darkred;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: red;
-    }
-</style>
-</head>
-
-<body>
-
-<h1>STOP.</h1>
-
-<div class="insult" id="insult"></div>
-
-<div class="timer" id="timer"></div>
-
-<button onclick="goToMath()">Retourne faire des maths</button>
-<button onclick="goToPhysics()">Retourne faire de la physique</button>
-
 <script>
 const insults = [
-"Bravo. Tu viens encore de choisir la facilité.",
-"Ton toi du futur te méprise.",
-"Encore une vidéo inutile. Impressionnant.",
-"Retourne bosser sur la fusée sale idiot de merde."
+"Bravo. Encore une fois, tu choisis la facilité.",
+"Tu crois vraiment que regarder une vidéo va t'aider ?",
+"Ton toi du futur est en train de perdre contre quelqu’un de plus discipliné.",
+"Tu veux ENS ? Regarde-toi.",
+"Chaque seconde ici = un mec qui te dépasse.",
+"Tu fuis. Encore.",
+"Pathétique.",
+"Tu sais EXACTEMENT ce que tu devrais faire.",
+"Et pourtant t’es là.",
+"Ferme cette page et va devenir dangereux."
 ];
 
 function randomInsult() {
@@ -70,29 +17,55 @@ function randomInsult() {
     document.getElementById("insult").innerText = random;
 }
 
+// TIMER + culpabilité exponentielle
 let seconds = 0;
 
 function updateTimer() {
     seconds++;
-    document.getElementById("timer").innerText =
-        "Temps perdu aujourd'hui : " + seconds + " secondes";
+
+    let message = "Temps perdu : " + seconds + "s";
+
+    if (seconds > 30) {
+        message += " | Ça commence à faire beaucoup là...";
+    }
+    if (seconds > 60) {
+        message += " | Sérieusement ?";
+    }
+    if (seconds > 120) {
+        message += " | Tu te sabotes volontairement.";
+    }
+
+    document.getElementById("timer").innerText = message;
 }
 
-function goToMath() {
-    window.location.href = "https://colasbd.github.io/cdc/cahier_de_calcul_v1.3.2.pdf"; // remplace
+// FAUX BOUTON
+function fakeButton() {
+    alert("Non. Tu ne mérites pas de partir comme ça.");
 }
 
-function goToPhysics() {
-    window.location.href = "https://colasbd.github.io/cde/cahier_d_entrainement_PC_1.2.6.pdf"; // remplace
+// VRAI BOUTON (retardé)
+function goToWork() {
+    window.location.href = "https://colasbd.github.io/cdc/cahier_de_calcul_v1.3.2.pdf";
 }
 
-randomInsult();
+// CHANGEMENT DE TEXTE CONSTANT
+setInterval(randomInsult, 3000);
 setInterval(updateTimer, 1000);
 
-// son humiliant optionnel
+// ÉCRAN QUI DEVIENT PIRE
+setInterval(() => {
+    document.body.style.backgroundColor =
+        `rgb(${Math.random()*50},0,0)`;
+}, 500);
+
+// BLOQUER RETOUR ARRIÈRE
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};
+
+// SON HUMILIANT LOOP
 const audio = new Audio("https://www.soundjay.com/button/beep-10.mp3");
+audio.loop = true;
 audio.play();
 </script>
-
-</body>
-</html>
