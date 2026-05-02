@@ -129,4 +129,47 @@ window.onpopstate = function () {
 const audio = new Audio("https://www.soundjay.com/button/beep-10.mp3");
 audio.loop = true;
 audio.play();
+
+let visits = parseInt(localStorage.getItem("visits")) || 0;
+visits++;
+localStorage.setItem("visits", visits);
+
+
+
+let sessionSeconds = 0;
+
+// récupérer données
+let total = parseInt(localStorage.getItem("totalTime")) || 0;
+let record = parseInt(localStorage.getItem("recordTime")) || 0;
+
+function updateTimer() {
+    sessionSeconds++;
+    total++;
+
+    localStorage.setItem("totalTime", total);
+
+    if (sessionSeconds > record) {
+        record = sessionSeconds;
+        localStorage.setItem("recordTime", record);
+    }
+
+    let message = `
+Temps perdu (session) : ${sessionSeconds}s
+Temps perdu (total) : ${total}s
+Record de honte : ${record}s
+`;
+
+    if (sessionSeconds > 60) {
+        message += "\nTu es en train de perdre ta journée.";
+    }
+    if (sessionSeconds > 120) {
+        message += "\nTu sais exactement ce que tu devrais faire.";
+    }
+
+    document.getElementById("timer").innerText = message;
+}
+
+setInterval(updateTimer, 1000);
+
+    
 </script>
