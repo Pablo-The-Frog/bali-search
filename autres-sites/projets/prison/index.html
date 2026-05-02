@@ -86,32 +86,47 @@
 
     visits++;
     localStorage.setItem("visits", visits);
+function formatTime(seconds) {
+    let d = Math.floor(seconds / (3600 * 24));
+    let h = Math.floor((seconds % (3600 * 24)) / 3600);
+    let m = Math.floor((seconds % 3600) / 60);
+    let s = seconds % 60;
 
-    function updateTimer() {
-        sessionSeconds++;
-        total++;
+    let res = "";
+    if (d > 0) res += d + "j ";
+    if (h > 0 || d > 0) res += h + "h ";
+    if (m > 0 || h > 0 || d > 0) res += m + "m ";
+    res += s + "s";
+    return res;
+}
 
-        localStorage.setItem("totalTime", total);
+function updateTimer() {
+    sessionSeconds++;
+    total++;
 
-        if (sessionSeconds > record) {
-            record = sessionSeconds;
-            localStorage.setItem("recordTime", record);
-        }
+    localStorage.setItem("totalTime", total);
 
-        let message = `Temps perdu (session) : ${sessionSeconds}s\n`;
-        message += `Temps perdu (total) : ${total}s\n`;
-        message += `Record de honte : ${record}s`;
-
-        if (sessionSeconds > 30 && sessionSeconds <= 60) {
-            message += "\n\nÇa commence à faire beaucoup là...";
-        } else if (sessionSeconds > 60 && sessionSeconds <= 120) {
-            message += "\n\nSérieusement ? Tu es en train de perdre ta journée.";
-        } else if (sessionSeconds > 120) {
-            message += "\n\nTu te sabotes volontairement. C'est lamentable.";
-        }
-
-        document.getElementById("timer").innerText = message;
+    if (sessionSeconds > record) {
+        record = sessionSeconds;
+        localStorage.setItem("recordTime", record);
     }
+
+    // Utilisation de la fonction formatTime pour un affichage propre
+    let message = `Temps perdu (session) : ${formatTime(sessionSeconds)}\n`;
+    message += `Temps perdu (total) : ${formatTime(total)}\n`;
+    message += `Record de honte : ${formatTime(record)}`;
+
+    // Seuils de culpabilité (basés sur les secondes de la session actuelle)
+    if (sessionSeconds > 60 && sessionSeconds <= 300) {
+        message += "\n\nUne minute de ta vie qui ne reviendra jamais.";
+    } else if (sessionSeconds > 300 && sessionSeconds <= 1800) {
+        message += "\n\n5 minutes de vide. Ton cerveau ramollit.";
+    } else if (sessionSeconds > 1800) {
+        message += "\n\nPlus d'une demi-heure. C'est un suicide temporel.";
+    }
+
+    document.getElementById("timer").innerText = message;
+}
 
     // FONCTIONS DE REDIRECTION
     function goToMath() {
@@ -120,7 +135,7 @@
 
     function goToPhysics() {
         // Lien vers un site de physique (ex: ressources CPGE)
-        window.location.href = "https://prepas.org/?physique";
+        window.location.href = "https://colasbd.github.io/cde/cahier_d_entrainement_PC_1.2.6.pdf";
     }
 
     // BOUTON DE SORTIE (optionnel)
