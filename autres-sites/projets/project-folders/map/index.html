@@ -73,31 +73,7 @@ Forcer une nouvelle destination
 
 
 
-    
-const visitedPlaces = [
-    {
-        name: "Ancienne destination",
-        lat: 43.48,
-        lon: -1.45
-    }
-];
 
-
-
-
-
-
-
-
-
-visitedPlaces.forEach(place => {
-    L.circleMarker([place.lat, place.lon], {
-        radius: 6,
-        color: "red"
-    }).addTo(map)
-    .bindPopup(place.name);
-});
-    
 
 const zones = [
     {
