@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destination de la semaine</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+    body {
+        margin: 0;
+        background: #0d1117;
+        color: white;
+        font-family: monospace;
+        text-align: center;
+    }
+
+    h1 {
+        margin-top: 20px;
+        font-size: 2rem;
+    }
+
+    #map {
+        height: 70vh;
+        width: 90%;
+        margin: 20px auto;
+        border: 2px solid #30363d;
+        border-radius: 10px;
+    }
+
+    .info {
+        margin-top: 10px;
+        font-size: 1.2rem;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: #21262d;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    button:hover {
+        background: #30363d;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Destination de la semaine</h1>
+
+<div class="info" id="locationText">
+Chargement...
+</div>
+
+<div id="map"></div>
+
+<button onclick="generateNewDestination()">
+Forcer une nouvelle destination
+</button>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+// Zones avec coordonnées approximatives
+const zones = [
+    {
+        name: "Bayonne",
+        minLat: 43.47,
+        maxLat: 43.52,
+        minLon: -1.52,
+        maxLon: -1.43
+    },
+    {
+        name: "Anglet",
+        minLat: 43.47,
+        maxLat: 43.53,
+        minLon: -1.56,
+        maxLon: -1.48
+    },
+    {
+        name: "Biarritz",
+        minLat: 43.45,
+        maxLat: 43.50,
+        minLon: -1.58,
+        maxLon: -1.52
+    },
+    {
+        name: "Urcuit",
+        minLat: 43.47,
+        maxLat: 43.53,
+        minLon: -1.35,
+        maxLon: -1.25
+    },
+    {
+        name: "Saint-Pierre-d'Irube",
+        minLat: 43.46,
+        maxLat: 43.50,
+        minLon: -1.48,
+        maxLon: -1.41
+    }
+];
+
+// Initialisation map
+const map = L.map('map').setView([43.48, -1.47], 11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let marker;
+
+// Génère une seed basée sur la semaine actuelle
+function getWeekSeed() {
+    const now = new Date();
+
+    const firstJan = new Date(now.getFullYear(), 0, 1);
+
+    const days = Math.floor((now - firstJan) / 86400000);
+
+    return Math.ceil((days + firstJan.getDay() + 1) / 7);
+}
+
+// Random déterministe
+function seededRandom(seed) {
+    let x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+}
+
+function generateDestination() {
+
+    const seed = getWeekSeed();
+
+    const zoneIndex =
+        Math.floor(seededRandom(seed) * zones.length);
+
+    const zone = zones[zoneIndex];
+
+    const lat =
+        zone.minLat +
+        seededRandom(seed + 1) *
+        (zone.maxLat - zone.minLat);
+
+    const lon =
+        zone.minLon +
+        seededRandom(seed + 2) *
+        (zone.maxLon - zone.minLon);
+
+    return {
+        zone: zone.name,
+        lat,
+        lon
+    };
+}
+
+function displayDestination(data) {
+
+    if (marker) {
+        map.removeLayer(marker);
+    }
+
+    marker = L.marker([data.lat, data.lon]).addTo(map);
+
+    map.setView([data.lat, data.lon], 14);
+
+    document.getElementById("locationText").innerHTML =
+        `
+        Cette semaine :
+        <br><br>
+        <strong>${data.zone}</strong>
+        <br>
+        Latitude : ${data.lat.toFixed(5)}
+        <br>
+        Longitude : ${data.lon.toFixed(5)}
+        `;
+}
+
+function generateNewDestination() {
+
+    const randomZone =
+        zones[Math.floor(Math.random() * zones.length)];
+
+    const lat =
+        randomZone.minLat +
+        Math.random() *
+        (randomZone.maxLat - randomZone.minLat);
+
+    const lon =
+        randomZone.minLon +
+        Math.random() *
+        (randomZone.maxLon - randomZone.minLon);
+
+    displayDestination({
+        zone: randomZone.name,
+        lat,
+        lon
+    });
+}
+
+// Destination fixe de la semaine
+const weeklyDestination = generateDestination();
+
+displayDestination(weeklyDestination);
+
+</script>
+
+</body>
+</html>
