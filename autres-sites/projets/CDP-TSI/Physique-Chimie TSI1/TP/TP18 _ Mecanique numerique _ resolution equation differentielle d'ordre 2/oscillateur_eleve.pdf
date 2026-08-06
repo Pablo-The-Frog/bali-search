@@ -1,0 +1,53 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+# ===============================
+# Paramètres physiques
+# ===============================
+g = __ # à compléter
+l = 1 # longueur du pendule 1 m
+omega0 = np.sqrt(g/l)
+T0 = 2*np.pi/omega0 # période des oscillations
+
+# ===============================
+# Paramètres numériques
+# ===============================
+dt = T0/100 # dt << devant les périodes d'oscillations.
+tmax = 4 * T0
+
+# ===============================
+# Conditions initiales
+# ===============================
+theta0 =  20*np.pi/180 # angle initial en radian
+d_theta0 = 0 # vitesse angulaire initiale (nulle ici)
+
+# ===============================
+# Allocation mémoire
+# ===============================
+X0 = [__, __]   # à compléter
+t = np.arange(0, tmax, dt) # tableau des temps
+
+
+# ===============================
+# Calcul solution
+# ===============================
+def F(X, t):
+    # fonction F à compléter
+    return [__, __] # à compléter
+
+sol = odeint(F, X0, t)
+theta = sol[:,0]
+
+
+# ===============================
+# Affichage
+# ===============================
+theta_analytique = __ # à compléter
+plt.figure(figsize=(12,8))
+plt.plot(t, np.array(theta)*180/np.pi, '--k')
+plt.plot(t, theta_analytique , '-.r') # solution théorique
+plt.xlabel('t (s)')
+plt.ylabel(r'$\theta$ (°)')
+plt.grid()
+plt.show()

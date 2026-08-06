@@ -1,0 +1,176 @@
+import random
+import ia
+from fonctions import add_tuple, diff_tuple, mult_tuple
+
+
+class Snake:
+    def __init__(self, position=(5,5), direction=(1,0), name="Serpent", is_ia=False):
+        """_summary_
+
+        Args:
+            position (tuple, optional): position de la tete du serpent. Defaults to (5,5).
+            direction (tuple, optional): direction de propagation du serpent. Defaults to (1,0).
+        """
+        # define positions
+        self.head = position
+        self.positions = [self.head]
+        self._update_positions_set()
+        
+        # define direction
+        self.direction = direction
+        
+        # users parameters
+        self.name = name
+        self.is_ia = is_ia
+        self.score = 0
+        
+        # fin de partie
+        self.is_dead = False
+    
+    
+    def move(self):
+        """Actualise nouvelle position du serpent dans la direction donnée.
+        """
+        p = self.positions.copy()
+        
+        # change la position de la tête
+        self.move_head(self.direction)
+        p[0] = self.head
+        
+        # décale le corps du serpent
+        for k in range(1, len(p)):
+            p[k] = self.positions[k-1]
+        
+        # sauvegarde
+        self.positions = p
+        self._update_positions_set()
+    
+    def _update_positions_set(self):
+        self.positions_set = set(self.positions[1:])
+    
+    def move_head(self, delta):
+        """_summary_
+
+        Args:
+            delta (tuple): ajouter à la tête
+        """
+        self.head = add_tuple(self.head, delta)
+    
+    def grow(self):
+        if len(self.positions) in {1, 2}: # serpent petit
+            self.positions.append(add_tuple(self.positions[-1], mult_tuple(self.direction, -1)))    
+        else: # la têtre
+            delta = diff_tuple(self.positions[-1], self.positions[-2])
+            self.positions.append(add_tuple(self.positions[-1], delta))
+        self._update_positions_set()
+    
+    def set_direction(self,d):
+        if add_tuple(self.direction, d) != (0,0):
+            self.direction = d
+
+
+class Apple:
+    def __init__(self, position):
+        self.position = position
+    
+    
+class Game:
+    
+    def __init__(self, snakes=None, width=10, height=10, apple_interval=2):
+        self.width = width
+        self.height = height
+        self.snakes = snakes if snakes is not None else [Snake()]
+        for snake in self.snakes:
+            self._validate_snake_position(snake)
+        
+        self.apples = []
+        self.apple_interval = apple_interval
+        
+        # fin de partie
+        self.finished = False
+        self.winner = None
+        
+        
+    def _validate_snake_position(self, snake):
+        for p in snake.positions:
+            if p[0] not in range(1, self.width-1):
+                raise ValueError('Position intial du serpent trop proche du bord ou en dehors de la grille')
+
+            if p[1] not in range(1, self.height-1):
+                raise ValueError('Position intial du serpent trop proche du bord ou en dehors de la grille')
+    
+    def update(self):
+        # phase de decision
+        for snake in self.snakes:
+            if snake.is_ia: # gestion du update pour l'ia
+                direction = ia.decide_direction(self, snake)
+                snake.direction = direction
+        
+        # phase d'action
+        for snake in self.snakes:
+            snake.move()
+        
+        # phase d'analyse
+        for snake in self.snakes:
+            if self._check_collision(snake):
+                self.finished = True
+                snake.is_dead = True
+            else:
+                self._check_apple_collision(snake)
+            
+        # phase de fin
+        if self.finished:
+            alived = [snake for snake in self.snakes if not snake.is_dead]
+            if len(alived) == 1:
+                self.winner = alived[0]
+            elif len(alived) > 1 :
+                self.winner = max(alived, key=lambda s:s.score)
+            else : # aucun survivant
+                self.winner = None # cas d'égalité
+        
+    def _check_apple_collision(self, snake):
+        loc = [a.position for a  in self.apples]
+        if snake.head in loc:
+            snake.grow()
+            for i, a in enumerate(self.apples):
+                if a.position == snake.head:
+                    del self.apples[i]
+            snake.score += 1
+        
+    def _check_collision(self, snake):
+        # wall collisions
+        if snake.head[0] in [-1, self.width]:
+            return True
+        if snake.head[1] in [-1, self.height]:
+            return True
+        
+        # auto collision
+        if snake.head in snake.positions_set:
+            return True
+        
+        # collision avec un autre serpent
+        for other_snake in self.snakes:
+            if other_snake is not snake and snake.head in (other_snake.positions_set | {other_snake.head}):
+                return True
+        
+        return False
+    
+        
+    def spawn_apple(self):
+        if len(self.apples) < 2:
+            pos = self.random_free_position()
+            self.apples.append(Apple(pos))
+            
+
+    def random_free_position(self):
+        while True:
+            # tirage aléatoire de la position d'une pomme
+            pos = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
+            
+            # chercher toutes les positions interdites
+            occupied = {a.position for a in self.apples}
+            for snake in self.snakes:
+                occupied |= snake.positions_set | {snake.head}
+            
+            if pos not in occupied:
+                return pos

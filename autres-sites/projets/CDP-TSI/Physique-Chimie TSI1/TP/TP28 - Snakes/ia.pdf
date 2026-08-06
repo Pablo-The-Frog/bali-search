@@ -1,0 +1,61 @@
+from fonctions import add_tuple, manhattan_distance
+
+# def get_target(game, snake):
+#     if len(game.apples) == 0: # pas de pommme
+#         return (int(game.width/2) , int(game.height/2))
+def get_target(game, snake):
+    if len(game.apples) == 0:  # pas de pomme
+        return (int(game.width / 2), int(game.height / 2))
+
+    others = [s for s in game.snakes if s is not snake]
+
+    def score(apple_pos):
+        my_distance = manhattan_distance(apple_pos, snake.head)
+        if others:
+            best_opponent_distance = min(
+                manhattan_distance(apple_pos, other.head) for other in others
+            )
+            if best_opponent_distance < my_distance:
+                return my_distance + game.width + game.height  # pomme contestée : grosse pénalité
+        return my_distance
+
+    return min(
+        (apple.position for apple in game.apples),
+        key=score
+    )
+
+def decide_direction(game,  snake):
+    # ajouter les position valide
+    possible_directions = [d for d in [(1,0), (-1,0), (0,1), (0,-1)] if not check_collision(game, snake, d)]
+
+    if not possible_directions: # aucune position possible -> defaite (on avance en bas)
+        return snake.direction # continue dans sa direction
+
+    target = get_target(game, snake)
+    
+    def remaining_distance(direction):
+        new_head_location = add_tuple(snake.head, direction)
+        return manhattan_distance(new_head_location, target)
+    
+    return min(possible_directions, key=remaining_distance) # retourne la prochaine position la plus proche (min) de la cible
+    
+def check_collision(game, snake, direction):
+    new_head_position = add_tuple(snake.head, direction)
+    
+    # hors terrain ?
+    if new_head_position[0] in [-1, game.width]:
+        return True
+    
+    if new_head_position[1] in [-1, game.height]:
+        return True
+    
+    # check les auto_collision
+    if new_head_position in snake.positions_set:
+        return True
+    
+    # collision avec un autre serpent
+    for other_snake in game.snakes:
+        if other_snake is not snake and new_head_position in (other_snake.positions_set | {other_snake.head}):
+            return True
+    
+    return False

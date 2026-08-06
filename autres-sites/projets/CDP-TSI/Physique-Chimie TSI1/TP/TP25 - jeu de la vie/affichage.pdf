@@ -1,0 +1,349 @@
+"""
+affichage.py — Moteur graphique (NE PAS MODIFIER)
+==================================================
+Ce fichier est fourni par le professeur.
+Les étudiants n'ont pas à le modifier.
+
+Dépendances :
+    pip install pygame
+
+Utilisation (dans le fichier étudiant) :
+    from affichage import Affichage
+
+    grille_init = [[0, 1, ...], ...]
+
+    def update(grille):
+        ...
+        return nouvelle_grille
+
+    jeu = Affichage(grille_init, update)
+    jeu.lancer()
+"""
+
+import copy
+import sys
+import time
+
+try:
+    import pygame
+except ImportError:
+    print("=" * 55)
+    print("  ERREUR : le module 'pygame' est introuvable.")
+    print("  Installez-le avec : pip install pygame")
+    print("=" * 55)
+    sys.exit(1)
+
+
+# ===========================================================
+# Constantes graphiques (modifiables par le professeur)
+# ===========================================================
+
+TAILLE_CELLULE_DEFAUT = 20      # pixels par cellule (si non spécifié)
+TAILLE_CELLULE_MIN    = 2       # pixels minimum
+TAILLE_CELLULE_MAX    = 80      # pixels maximum
+
+GRILLE_MAX_LIGNES     = 500
+GRILLE_MAX_COLONNES   = 500
+
+DELAI_DEFAUT = 0.2              # secondes entre chaque génération (~5 gen/s)
+
+COULEUR_FOND     = (15,  15,  20)
+COULEUR_VIVANTE  = (80, 220, 120)
+COULEUR_MORTE    = (30,  30,  40)
+COULEUR_GRILLE   = (45,  45,  60)
+COULEUR_TEXTE    = (200, 200, 220)
+COULEUR_ACCENT   = (80, 220, 120)
+COULEUR_BARRE    = (22,  22,  32)
+COULEUR_ERREUR   = (220, 80,  80)
+
+HAUTEUR_BARRE = 52
+
+
+# ===========================================================
+# Classe principale
+# ===========================================================
+
+class Affichage:
+    """
+    Gère l'affichage graphique d'un automate cellulaire 2D.
+
+    Paramètres
+    ----------
+    grille_initiale : list[list[int]]
+        Grille de départ. Doit contenir uniquement des 0 et des 1.
+        Taille maximale : 500 × 500.
+
+    update : callable
+        Fonction de transition (grille → nouvelle_grille).
+        Signature attendue : update(grille: list[list[int]]) -> list[list[int]]
+
+    taille_cellule : int, optionnel
+        Taille en pixels de chaque cellule (entre 2 et 80).
+        Par défaut calculée automatiquement pour tenir dans 1200×800.
+    """
+
+    def __init__(self, grille_initiale, update, taille_cellule=None):
+        self._valider_grille(grille_initiale)
+        self._valider_update(update)
+
+        self._grille_initiale = copy.deepcopy(grille_initiale)
+        self._grille          = copy.deepcopy(grille_initiale)
+        self._update          = update
+
+        self._nb_lignes   = len(grille_initiale)
+        self._nb_colonnes = len(grille_initiale[0])
+
+        self._taille_cellule = self._choisir_taille_cellule(taille_cellule)
+        self._delai          = DELAI_DEFAUT
+
+        self._generation = 0
+        self._en_pause   = True
+        self._dernier_pas = time.time()
+
+        self._init_pygame()
+
+    # ----------------------------------------------------------
+    # Validation
+    # ----------------------------------------------------------
+
+    def _valider_grille(self, grille):
+        # Accepte list[list] et numpy.ndarray
+        try:
+            import numpy as np
+            _numpy_disponible = True
+        except ImportError:
+            _numpy_disponible = False
+
+        est_numpy = _numpy_disponible and isinstance(grille, np.ndarray)
+
+        if est_numpy:
+            if grille.ndim != 2:
+                raise ValueError(
+                    f"Le tableau numpy doit être 2D, reçu : {grille.ndim}D."
+                )
+            nb_lignes, nb_cols = grille.shape
+        elif isinstance(grille, list) and len(grille) > 0:
+            nb_lignes = len(grille)
+            nb_cols   = len(grille[0])
+        else:
+            raise ValueError(
+                "grille_initiale doit être une liste de listes ou un tableau numpy 2D non vide."
+            )
+
+        if nb_lignes > GRILLE_MAX_LIGNES or nb_cols > GRILLE_MAX_COLONNES:
+            raise ValueError(
+                f"Grille trop grande : {nb_lignes}×{nb_cols}. "
+                f"Maximum autorisé : {GRILLE_MAX_LIGNES}×{GRILLE_MAX_COLONNES}."
+            )
+
+        if est_numpy:
+            if not np.all((grille == 0) | (grille == 1)):
+                coords = list(zip(*np.where((grille != 0) & (grille != 1))))
+                i, j = coords[0]
+                raise ValueError(
+                    f"Valeur invalide en [{i}][{j}] : {grille[i, j]!r}. "
+                    "Seuls 0 et 1 sont acceptés."
+                )
+        else:
+            for i, ligne in enumerate(grille):
+                if not isinstance(ligne, list):
+                    raise TypeError(f"La ligne {i} n'est pas une liste.")
+                if len(ligne) != nb_cols:
+                    raise ValueError(
+                        f"La ligne {i} a {len(ligne)} colonnes, "
+                        f"attendu {nb_cols}."
+                    )
+                for j, val in enumerate(ligne):
+                    if val not in (0, 1):
+                        raise ValueError(
+                            f"Valeur invalide en [{i}][{j}] : {val!r}. "
+                            "Seuls 0 et 1 sont acceptés."
+                        )
+
+    def _valider_update(self, update):
+        if not callable(update):
+            raise TypeError(
+                "Le second argument doit être une fonction callable. "
+                f"Reçu : {type(update).__name__!r}."
+            )
+
+    # ----------------------------------------------------------
+    # Taille automatique
+    # ----------------------------------------------------------
+
+    def _choisir_taille_cellule(self, demande):
+        """Calcule une taille de cellule adaptée à la résolution."""
+        if demande is not None:
+            tc = int(demande)
+            if not (TAILLE_CELLULE_MIN <= tc <= TAILLE_CELLULE_MAX):
+                raise ValueError(
+                    f"taille_cellule doit être entre {TAILLE_CELLULE_MIN} "
+                    f"et {TAILLE_CELLULE_MAX} pixels."
+                )
+            return tc
+
+        # Auto : tenir dans 1200 × (800 - barre)
+        max_w = 1200
+        max_h = 800 - HAUTEUR_BARRE - 20
+        tc_w  = max_w // self._nb_colonnes
+        tc_h  = max_h // self._nb_lignes
+        tc    = max(TAILLE_CELLULE_MIN, min(tc_w, tc_h, TAILLE_CELLULE_DEFAUT))
+        return tc
+
+    # ----------------------------------------------------------
+    # Initialisation Pygame
+    # ----------------------------------------------------------
+
+    def _init_pygame(self):
+        pygame.init()
+        pygame.display.set_caption("Simulateur — Automate cellulaire")
+
+        self._marge_h = 20
+        self._marge_c = 20
+
+        tc = self._taille_cellule
+        self._largeur = self._nb_colonnes * tc + 2 * self._marge_c
+        self._hauteur = self._nb_lignes   * tc + self._marge_h + HAUTEUR_BARRE
+
+        # Largeur minimale pour la barre de contrôles
+        self._largeur = max(self._largeur, 600)
+
+        self._ecran = pygame.display.set_mode((self._largeur, self._hauteur))
+        self._clock = pygame.time.Clock()
+
+        self._font_titre = pygame.font.SysFont("monospace", 14, bold=True)
+        self._font_info  = pygame.font.SysFont("monospace", 12)
+        self._font_petit = pygame.font.SysFont("monospace", 11)
+
+        print(f"Grille {self._nb_lignes}×{self._nb_colonnes} "
+              f"| Cellule : {tc}px")
+        print("ESPACE : pause/play  |  N : étape  |  R : reset  "
+              "|  +/- : taille  |  Q : quitter")
+
+    # ----------------------------------------------------------
+    # Dessin
+    # ----------------------------------------------------------
+
+    def _dessiner_cellules(self):
+        tc       = self._taille_cellule
+        offset_x = self._marge_c
+        offset_y = self._marge_h
+
+        for l in range(self._nb_lignes):
+            for c in range(self._nb_colonnes):
+                x = offset_x + c * tc
+                y = offset_y + l * tc
+                couleur = COULEUR_VIVANTE if self._grille[l][c] else COULEUR_MORTE
+                if tc > 3:
+                    pygame.draw.rect(self._ecran, couleur,
+                                     (x + 1, y + 1, tc - 2, tc - 2))
+                else:
+                    pygame.draw.rect(self._ecran, couleur, (x, y, tc, tc))
+
+        # Quadrillage (uniquement si cellule assez grande)
+        if tc >= 6:
+            for l in range(self._nb_lignes + 1):
+                pygame.draw.line(self._ecran, COULEUR_GRILLE,
+                                 (offset_x, offset_y + l * tc),
+                                 (offset_x + self._nb_colonnes * tc, offset_y + l * tc))
+            for c in range(self._nb_colonnes + 1):
+                pygame.draw.line(self._ecran, COULEUR_GRILLE,
+                                 (offset_x + c * tc, offset_y),
+                                 (offset_x + c * tc, offset_y + self._nb_lignes * tc))
+
+    def _dessiner_barre(self):
+        y_barre = self._hauteur - HAUTEUR_BARRE
+        pygame.draw.rect(self._ecran, COULEUR_BARRE,
+                         (0, y_barre, self._largeur, HAUTEUR_BARRE))
+        pygame.draw.line(self._ecran, COULEUR_GRILLE,
+                         (0, y_barre), (self._largeur, y_barre))
+
+        etat = "⏸  PAUSE" if self._en_pause else "▶  EN COURS"
+        self._ecran.blit(
+            self._font_titre.render(etat, True, COULEUR_ACCENT),
+            (16, y_barre + 8)
+        )
+        self._ecran.blit(
+            self._font_info.render(f"Génération : {self._generation}", True, COULEUR_TEXTE),
+            (16, y_barre + 28)
+        )
+        self._ecran.blit(
+            self._font_petit.render(
+                f"Taille cellule : {self._taille_cellule}px  "
+                "| ESPACE  N  R  +/-  Q",
+                True, (90, 90, 110)
+            ),
+            (200, y_barre + 28)
+        )
+
+    # ----------------------------------------------------------
+    # Redimensionnement dynamique
+    # ----------------------------------------------------------
+
+    def _changer_taille_cellule(self, delta):
+        nouvelle = self._taille_cellule + delta
+        if not (TAILLE_CELLULE_MIN <= nouvelle <= TAILLE_CELLULE_MAX):
+            return
+
+        self._taille_cellule = nouvelle
+        tc = nouvelle
+        self._largeur = max(self._nb_colonnes * tc + 2 * self._marge_c, 600)
+        self._hauteur = self._nb_lignes * tc + self._marge_h + HAUTEUR_BARRE
+
+        self._ecran = pygame.display.set_mode((self._largeur, self._hauteur))
+
+    # ----------------------------------------------------------
+    # Boucle principale
+    # ----------------------------------------------------------
+
+    def lancer(self):
+        """Lance la simulation. Bloque jusqu'à la fermeture de la fenêtre."""
+        while True:
+            for event in pygame.event.get():
+                self._traiter_event(event)
+
+            # Avancement automatique
+            if not self._en_pause:
+                maintenant = time.time()
+                if maintenant - self._dernier_pas >= self._delai:
+                    self._avancer()
+                    self._dernier_pas = maintenant
+
+            # Dessin
+            self._ecran.fill(COULEUR_FOND)
+            self._dessiner_cellules()
+            self._dessiner_barre()
+            pygame.display.flip()
+            self._clock.tick(60)
+
+    def _traiter_event(self, event):
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key in (pygame.K_q, pygame.K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+            elif event.key == pygame.K_SPACE:
+                self._en_pause = not self._en_pause
+            elif event.key == pygame.K_n:
+                self._avancer()
+            elif event.key == pygame.K_r:
+                self._grille     = copy.deepcopy(self._grille_initiale)
+                self._generation = 0
+                self._en_pause   = True
+                print("Réinitialisation.")
+            elif event.key in (pygame.K_PLUS, pygame.K_KP_PLUS, pygame.K_EQUALS):
+                self._changer_taille_cellule(+1)
+            elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                self._changer_taille_cellule(-1)
+
+    def _avancer(self):
+        resultat = self._update(self._grille)
+        if resultat is None:
+            print("AVERTISSEMENT : update() a retourné None. "
+                "Avez-vous oublié 'return nouvelle_grille' ?")
+            return
+        self._grille = resultat
+        self._generation += 1

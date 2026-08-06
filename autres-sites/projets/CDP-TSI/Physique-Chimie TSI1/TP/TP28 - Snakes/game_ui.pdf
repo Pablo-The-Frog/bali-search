@@ -1,0 +1,95 @@
+from PyQt6.QtWidgets import QWidget
+from PyQt6.QtCore import QTimer, Qt
+from PyQt6.QtGui import QPainter, QBrush, QColor, QFont
+
+import time
+
+class GameWidget(QWidget):
+    pixel = 20
+    
+    
+    def __init__(self, game, keymap):
+        super().__init__()
+        self.game = game  # ton objet de logique
+        
+        # dessin du terrain de jeu
+        self.setFixedSize((self.game.width+2)*self.pixel, (self.game.height+2)*self.pixel)
+        
+        # gestion du timer
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.on_tick)
+        self.timer.start(250)  # en millisecondes
+        
+        # gestion du timer apple
+        self.apple_interval = QTimer(self)
+        self.apple_interval.timeout.connect(self.on_apple_tick)
+        self.apple_interval.start(self.game.apple_interval*1000)  # en millisecondes
+
+        # focus sur les keyPressEvent
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.setFocus()
+        
+        # actions de touches
+        self.keymap = keymap
+    
+    def on_tick(self):
+        timer = time.perf_counter()
+        self.game.update()      # fait avancer la logique
+        if self.game.finished:
+            self.timer.stop()
+            self.apple_interval.stop()
+        self.update()           # méthode héritée de QWidget : redemande un paintEvent
+        timer = time.perf_counter() - timer
+        print(f"update() a pris {timer*1000:.2f} ms")
+        
+    def on_apple_tick(self):
+        self.game.spawn_apple()      # génére une pomme
+        self.update()           # méthode héritée de QWidget : redemande un paintEvent
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        
+        # zone de jeu
+        painter.setBrush(QBrush(QColor("black")))
+        painter.drawRect(self.pixel, self.pixel, (self.game.width)*self.pixel, (self.game.height)*self.pixel)
+        
+        # snakes
+        colors = ['Green', 'Blue', 'White']
+        for i, snake in enumerate(self.game.snakes):
+            painter.setBrush(QBrush(QColor(colors[i])))
+            for p in snake.positions[1:]:
+                x, y = [self.pixel*x+self.pixel for x in p]
+                painter.drawRect(x, y, self.pixel, self.pixel)
+        
+            painter.setBrush(QBrush(QColor("yellow")))
+            painter.drawRect(snake.head[0]*self.pixel+self.pixel, snake.head[1]*self.pixel+self.pixel, self.pixel, self.pixel)
+        
+        # apple
+        painter.setBrush(QBrush(QColor("red")))
+        for apple in self.game.apples:
+            x, y = [self.pixel*x+self.pixel for x in apple.position]
+            painter.drawRect(x, y, self.pixel, self.pixel)
+        
+        if self.game.finished:
+            
+            font = QFont()
+            font.setPointSize(32)       # taille en points, ajuste selon ton goût
+            font.setBold(True)
+            painter.setFont(font)
+            painter.setPen(QColor("Green"))
+            
+            message = "Égalité !" if self.game.winner is None else f"{self.game.winner.name} gagne !"
+            painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, message)
+        
+        
+        painter.end()
+        
+    def keyPressEvent(self, event):
+        """
+        Gére les actions du clavier : 
+        """
+        action = self.keymap.get(event.key())
+        # Remarques, les actions sont à définir dans le keymap de main.py
+        if action is not None:
+            action()
+        

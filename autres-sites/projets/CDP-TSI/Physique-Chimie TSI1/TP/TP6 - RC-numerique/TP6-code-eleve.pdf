@@ -1,0 +1,408 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "6973d43a-b626-4491-996c-78b8021f0275",
+   "metadata": {},
+   "source": [
+    "## 1. Dérivée d'une fonction"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cffaf314-21ee-497a-a425-a5a5b1ead123",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# lecture des bibliothèques, à compiler avant tout autre cellule.\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2e37a35e-0d3b-4703-a7a0-6fb0cd92ef5d",
+   "metadata": {},
+   "source": [
+    "### 1.1. Calcul de la dérivée"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "80fe94f0-712d-482b-abd7-fc62a025777d",
+   "metadata": {},
+   "source": [
+    "**Q2, Q3 et Q4**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e8563604-0850-49c1-aa07-526b4decc381",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# paramètre du problème\n",
+    "delta_x = .1\n",
+    "x = np.linspace(start=0,stop=10,num=100)\n",
+    "\n",
+    "# calcul des dérivées\n",
+    "fprime_num = __ # à compléter\n",
+    "fprime_th = __ # à compléter\n",
+    "\n",
+    "# tracés\n",
+    "plt.figure(figsize=(6,4))\n",
+    "plt.plot(x,fprime_num, '+b', label='dérivée numérique')\n",
+    "plt.plot(x,fprime_th, '-r', label='dérivée théorique')\n",
+    "plt.legend()\n",
+    "plt.grid()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6077af0a-f432-43e3-8d0f-6be1c949cf2d",
+   "metadata": {},
+   "source": [
+    "**Question 5** : programme permettant de calculer la dérivée d'une fonction quelconque."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7bc4e0c0-6e3d-4b68-a903-a157b2102f05",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def f(x):\n",
+    "    f = __ # fonction à entrer ici\n",
+    "    return f\n",
+    "\n",
+    "def derivee(f, x, dx):\n",
+    "    fp = __ # à compléter\n",
+    "    return fp\n",
+    "\n",
+    "x = np.linspace(.1,10,100)\n",
+    "dx = np.pi/100\n",
+    "\n",
+    "fp = derivee(_, _, _) # à compléter\n",
+    "\n",
+    "plt.plot(x, __, '-g') # à compléter avec la solution théorique\n",
+    "plt.plot(x, fp, '+r')\n",
+    "plt.grid()\n",
+    "\n",
+    "        "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "aa5dd762-17b8-4ff0-ac8c-252efa79ae9b",
+   "metadata": {},
+   "source": [
+    "### 1.2. Déterminer une primitive numérique\n",
+    "**Q.8**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "70c1deb8-bed9-445d-94aa-8f828f00561e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# paramètre du problème\n",
+    "x = np.linspace(0, 10, 200)\n",
+    "dx = x[1] - x[0]\n",
+    "fp = 2*x\n",
+    "f0 = 0\n",
+    "\n",
+    "# condition initiale\n",
+    "f = np.zeros_like(fp)\n",
+    "f[0] = f0\n",
+    "\n",
+    "# boucle tracé de f\n",
+    "for i in range(1, len(x)):\n",
+    "    f[i] = f[i-1] + fp[i]*dx\n",
+    "\n",
+    "# fonction théorique\n",
+    "fth = x**2\n",
+    "\n",
+    "plt.figure()\n",
+    "plt.plot(x,f, '+', label='Integrale numérique')\n",
+    "plt.plot(x,fth, label=\"Intégrale théorique\")\n",
+    "plt.plot(x,fp, label='Fonction dérivée')\n",
+    "plt.legend()\n",
+    "plt.grid()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0c8f0281-67fe-48da-beed-e764023d0c38",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Créer votre code pour intégrer la fonction de Gauss si dessous : \n",
+    "_ # à compléter"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b7b4c5ea-2235-4606-bce1-24fa0a7b1ecd",
+   "metadata": {},
+   "source": [
+    "## 2. Discrétisation d'une équation différentielle\n",
+    "\n",
+    "Soit l'équation différentielle $y' + ay = b$ dont nous cherchons la solution numérique.\n",
+    "\n",
+    "**Q11 et Q12**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7085b744-7b6f-474e-b50c-fe984495cdf3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# paramètres du problème\n",
+    "dx = .05\n",
+    "b = 4\n",
+    "a = 3\n",
+    "xmin = 0\n",
+    "xmax = 4\n",
+    "x = np.arange(start=xmin, stop=xmax, step=dx)\n",
+    "\n",
+    "# condition initiale\n",
+    "y = np.zeros_like(x)\n",
+    "y[0] = 6\n",
+    "\n",
+    "# détermination de y numérique pour tout x\n",
+    "for i in range(1,len(x)):\n",
+    "    y[i] = y[i-1] - dx*(a*y[i-1] - b)\n",
+    "\n",
+    "\n",
+    "# solution théorique de y_th\n",
+    "yth = (-b/a + y[0])*np.exp(-a*x) + b/a\n",
+    "\n",
+    "\n",
+    "# tracé des solution\n",
+    "plt.figure(figsize=(10,6))\n",
+    "plt.plot(x,y, '+b', label='Solution numérique')\n",
+    "plt.plot(x,yth, '-r', label='Solution théorique')\n",
+    "plt.grid()\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3475dda9-28a0-4fd6-8f96-a6828a0a2bd4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# récopier le code ci-dessus, et l'adapter pour pour résoudre l'équation différentielle demandée.\n",
+    "\n",
+    "__ # à compléter"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "241366fb-0e66-424c-86f7-1860ec78352c",
+   "metadata": {},
+   "source": [
+    "## 3. Résolution de la charge d'un condensateur.\n",
+    "**Q14 et Q15**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b50067ec-9fec-47f5-8fbc-7682fb88c70f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# paramètres physique\n",
+    "R = __ # à compléter\n",
+    "C = __ # à compléter\n",
+    "tau = __ # à completer\n",
+    "E = 5 # tension du générateur à t > 0, en [E] = V\n",
+    "\n",
+    "# paramètres numérique\n",
+    "dt = tau/10\n",
+    "tf = 10*tau # affichage de la solution jusqu'à 10 x tau\n",
+    "tini = 0\n",
+    "t = np.arange(start=tini, stop=tf, step=dt)\n",
+    "\n",
+    "# initialisation\n",
+    "u = np.zeros_like(t)\n",
+    "u[0] = 0 # la tension initiale vaut 0V\n",
+    "\n",
+    "# calcul de la solution numérique\n",
+    "for i in range(1, len(t)):\n",
+    "    __ # à compléter\n",
+    "\n",
+    "\n",
+    "# calcul de la solution théorique\n",
+    "u_th = __ # à compléter\n",
+    "\n",
+    "# tracé\n",
+    "plt.figure(figsize=(10,6))\n",
+    "plt.plot(__, __, '+b', label='Solution numérique') # à compléter\n",
+    "plt.plot(__, __, '-r', label='Solution théorique') # à compléter\n",
+    "plt.grid()\n",
+    "plt.legend()\n",
+    "plt.show()\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e311c772-df18-486f-8b05-7cb8fb0fa0fc",
+   "metadata": {},
+   "source": [
+    "## 4. Odeint"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f1d65e40-5f78-4d83-a566-b1d9ee4bc132",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from scipy.integrate import odeint\n",
+    "\n",
+    "# paramètres physiques\n",
+    "E = 5 # tension du générateur, [E] = V\n",
+    "R = __ # à compléter\n",
+    "C = __ # à compléter\n",
+    "tau = __ # à compléter\n",
+    "\n",
+    "\n",
+    "# paramètre numérique\n",
+    "dt = tau/10\n",
+    "t = np.arange(start=0, stop=10*tau, step=dt)\n",
+    "\n",
+    "def uprime(u, t):\n",
+    "    # expression de la dérivée (u') en fonction de la fonction (u) et du temps (t)\n",
+    "    uprime = __ # à compléter\n",
+    "    return uprime\n",
+    "\n",
+    "\n",
+    "# résolution numérique\n",
+    "u0 = 0\n",
+    "u = odeint(uprime, u0, t)\n",
+    "\n",
+    "# theorique\n",
+    "u_th = E*(1 - np.exp(-t/tau))\n",
+    "\n",
+    "# tracé\n",
+    "plt.plot(t, u, '.b', label='Odeint')\n",
+    "plt.plot(t, u_th, '-r', label='Odeint')\n",
+    "plt.grid()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cd0cec83-674d-4fb6-a6fd-38c0dc233326",
+   "metadata": {},
+   "source": [
+    "## 5. Réponse d'un RC à un crénau"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "64742856-a8a4-44b1-a6b9-845316dc44d7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "\n",
+    "# paramètres physiques\n",
+    "R = __ # à compléter\n",
+    "C = __ # à compléter\n",
+    "tau = __ # à compléter\n",
+    "T = __ # à compléter / période de variation du générateur\n",
+    "E = __ # à compléter\n",
+    "\n",
+    "# paramètres numériques\n",
+    "dt = np.min([tau, T])/100\n",
+    "tini = 0\n",
+    "tf = 10*np.max([tau, T])\n",
+    "t = np.arange(start=tini, stop=tf, step=dt)\n",
+    "\n",
+    "# tension du générateur\n",
+    "e = np.zeros_like(t)\n",
+    "for i_t in range(len(t)):\n",
+    "    q_e = __ # à compléter\n",
+    "    if q_e __ __  : # à compléter\n",
+    "        e[i_t] = E\n",
+    "    else:\n",
+    "        e[i_t] = 0\n",
+    "\n",
+    "# tracé de la tension du générateur\n",
+    "plt.figure()\n",
+    "plt.plot(t, e, '-r')\n",
+    "plt.grid()\n",
+    "plt.show()\n",
+    "\n",
+    "\n",
+    "# initialisation\n",
+    "__ # à completer\n",
+    "\n",
+    "# calcul de u à tout instant /!\\ e dépend du temps\n",
+    "for i in range(1, len(t)):    \n",
+    "    __ # à compléter\n",
+    "\n",
+    "# tracé\n",
+    "plt.figure(figsize=(10,6))\n",
+    "plt.plot(t,__,'.b', label='condensateur')  # à compléter\n",
+    "plt.plot(t,e,'-r', label='générateur')\n",
+    "plt.grid()\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cf66f8a7-1552-4937-8023-cbb10efddbff",
+   "metadata": {},
+   "source": [
+    "## 6. Réponse d'un RC à une fonction quelconque"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "638d1cd2-2b7b-4649-a266-331d015a256f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# si tu es arrivé jusque là, tu peux y arriver tout seul, bonne chance !"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

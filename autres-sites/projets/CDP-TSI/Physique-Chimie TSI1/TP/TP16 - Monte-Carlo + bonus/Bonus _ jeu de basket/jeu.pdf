@@ -1,0 +1,108 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+
+class Jeu():
+    taille_terrain_max = 28 # m
+    hauteur_panier_max = 6 # m
+    
+    
+    def __init__(self,niveau=None):
+        self.configurer_niveau(niveau)
+        self.dalpha = 1 # variation possible de l'angle au lancé
+        self.r_panier = .4 # largeur du panier
+    
+    def configurer_niveau(self, niveau):
+        niveaux = {
+            1: self.niveau_lancer_franc_connu,
+            2: self.niveau_lancer_franc_alea,
+            3: self.niveau_aleatoire,
+        }
+        niveaux.get(niveau, self.niveau_lancer_franc_connu)()
+            
+    def niveau_lancer_franc_connu(self):
+        # lancer franc vitesse connue
+        self.balle_x = 28 - 3.60
+        self.balle_y = 1.8
+        self.panier_x = 28
+        self.panier_y = 3.05
+        self.v0 = 8 # vitesse initiale
+    
+    def niveau_lancer_franc_alea(self):
+        # lancer franc vitesse connue
+        self.balle_x = 28 - 3.60
+        self.balle_y = 1.8
+        self.panier_x = 28
+        self.panier_y = 3.05
+        self.v0 = np.random.uniform(8, 12) # vitesse initiale
+    
+    def niveau_aleatoire(self):
+        # aléatoire
+        self.balle_x = np.random.uniform(0, 27)
+        self.balle_y = np.random.uniform(0, 3)
+        self.panier_x = 28
+        self.panier_y = np.random.uniform(2.8, 3.4)
+        dx = self.panier_x - self.balle_x
+        self.v0 = np.random.uniform(1.2*dx, 1.8*dx) # vitesse initiale
+       
+    
+    def get_partie(self):
+        print(f"Position de la balle ({self.balle_x:.2f} , {self.balle_y:.2f})")
+        print(f"Position du panier ({self.panier_x:.2f} , {self.panier_y:.2f})")
+        print(f"Vitesse initiale v0 = {self.v0:.2f}")
+        return [self.v0, (self.balle_x, self.balle_y), (self.panier_x, self.panier_y)]
+    
+    
+    def __est_panier(self, x, y, vy):
+        for i in range(len(y) - 1):
+            # franchissement du plan y = panier_y
+            if (y[i] > self.panier_y) and (y[i+1] <= self.panier_y):
+                # balle descend
+                if vy[i] < 0:
+                    # interpolation linéaire pour y au passage
+                    t = (self.panier_y - y[i]) / (y[i+1] - y[i])
+                    x_passage = x[i] + t * (x[i+1] - x[i])
+
+                    # test ouverture du cercle
+                    if abs(x_passage - self.panier_x) <= self.r_panier:
+                        return True
+        return False
+    
+    def trajectoire(self, alpha):
+        alpha = np.random.uniform(alpha-self.dalpha, alpha+self.dalpha)
+        print(f"Angle de lancer : {alpha:.2f}°")
+        
+        def traj(t, M, g):
+            x, y, vx, vy = M
+            dMdt = [M[2], M[3], 0, -g]
+            return dMdt
+        
+        def touche_sol(t, M, g):
+            return M[1]
+        touche_sol.terminal = True # condition d'arret
+        
+        def fond_terrain(t, M, g):
+            return M[0]-28.5
+        fond_terrain.terminal = True # condition d'arret
+        
+        M0 = [self.balle_x, self.balle_y, self.v0*np.cos(alpha*np.pi/180), self.v0*np.sin(alpha*np.pi/180)] # conditions initiales
+        t = np.linspace(0,4, 100)
+        g = 9.81
+        sol = solve_ivp(traj, [0,4],M0,args=(g,), t_eval=t, events=(touche_sol, fond_terrain))
+        
+        
+        return sol.y
+    
+    def simulation(self, alpha):
+        sol = self.trajectoire(alpha)
+        panier = self.__est_panier(x = sol[0,:],y = sol[1,:], vy = sol[3,:])
+        if panier:
+            print("Bravo, vous avez mis le panier")
+        else:
+            print("Dommage, vous avez raté le panier")
+        
+        # affichage
+        plt.plot(sol[0,:], sol[1,:], '-r')
+        plt.hlines(y=self.panier_y, xmin=self.panier_x- self.r_panier, xmax=self.panier_x+self.r_panier, color='k')
+        plt.show()

@@ -1,0 +1,49 @@
+from jeu import Jeu
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+partie = Jeu(3)
+[v0, balle, panier] = partie.get_partie()
+print(v0, balle, panier)
+
+def fun(x):
+    dx = panier[0] - balle[0]
+    dy = panier[1] - balle[1]
+    g = 9.81
+    return -g/2*dx**2/(v0**2*np.cos(x)**2) + dx*np.tan(x) - dy
+
+xmin = 0
+xmax = 85*np.pi/180
+x = np.linspace(xmin, xmax, 100)
+
+plt.plot(x*180/np.pi, fun(x), '-k')
+plt.grid()
+plt.show()
+
+xmin = float(input("Valeur minimale de l'ange"))*np.pi/180
+xmax = float(input("Valeur maximale de l'ange"))*np.pi/180
+print(xmin, xmax)
+
+# dichotomie
+xs = (xmax+xmin)/2
+eps = fun(xs)
+c = 0
+while eps > 1e-3:
+    if fun(xmin)*fun(xs)<0 : # la solution est entre xmin et xs
+        xmax = xs
+    else:
+        xmin = xs
+    xs = (xmax+xmin)/2
+    eps = abs(fun(xs))
+    print(c, xs, fun(xs))
+    c+=1
+
+plt.plot(x*180/np.pi, fun(x), '-k')
+plt.plot(xs*180/np.pi, fun(xs), 'or')
+plt.grid()
+plt.show()
+
+print(xs*180/np.pi)
+
+partie.simulation(xs*180/np.pi)

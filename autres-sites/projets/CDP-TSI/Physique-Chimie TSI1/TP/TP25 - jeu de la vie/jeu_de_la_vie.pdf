@@ -1,0 +1,98 @@
+"""
+jeu_de_la_vie.py — Fichier élève (solution)
+=========================================================
+Règles du Jeu de la Vie (Conway) :
+    - Une cellule VIVANTE (1) avec 2 ou 3 voisins vivants → reste vivante
+    - Une cellule MORTE  (0) avec exactement 3 voisins vivants → devient vivante
+    - Tous les autres cas → cellule morte (0)
+"""
+
+from affichage import Affichage
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# ===========================================================
+# PARTIE 1 — Grille initiale
+# ===========================================================
+
+# construction grille
+grille_init = np.array([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+])
+
+# affichage
+plt.figure()
+plt.imshow(grille_init)
+
+
+# ===========================================================
+# PARTIE 2 — Comptage des voisins
+# ===========================================================
+def compter_voisins(grille, i, j):
+    """
+    Compte les voisins vivants de la cellule (i, j).
+    Les cellules hors de la grille sont considérées mortes.
+    """
+    nb_lignes, nb_colonnes = grille.shape
+
+    # Calcul des bornes du voisinage en évitant de sortir de la grille
+    i_min = max(0, i - 1)
+    i_max = min(nb_lignes,   i + 2)
+    j_min = max(0, j - 1)
+    j_max = min(nb_colonnes, j + 2)
+
+    # mask de la grille autour des voisins
+    voisinage = grille[i_min:i_max, j_min:j_max]
+    count = voisinage.sum() - grille[i, j]  # on retire la cellule centrale
+    return int(count)
+
+
+# ===========================================================
+# PARTIE 3 — Règle d'actualisation
+# ===========================================================
+
+def update(grille):
+    """
+    Calcule et retourne la grille à l'étape suivante.
+    """
+    nb_lignes, nb_colonnes = grille.shape
+
+    nouvelle_grille = np.zeros_like(grille)
+
+    for i in range(nb_lignes):
+        for j in range(nb_colonnes):
+            voisins = compter_voisins(grille, i, j)
+            if grille[i, j] == 1:
+                if voisins == 2 or voisins == 3:
+                    nouvelle_grille[i, j] = 1
+            elif grille[i, j] == 0 and voisins == 3:
+                nouvelle_grille[i, j] = 1
+    return nouvelle_grille
+
+
+# ===========================================================
+# Lancement
+# ===========================================================
+# jeu = Affichage(grille_init, update)
+# jeu.lancer()
+
+# init
+plt.figure()
+plt.imshow(grille_init)
+new_grille = update(grille_init)
+for k in range(5):
+    plt.figure()
+    plt.imshow(new_grille)
+    new_grille = update(new_grille)
+    plt.grid()
+plt.show()

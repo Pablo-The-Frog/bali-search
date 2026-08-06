@@ -1,0 +1,9 @@
+from jeu import Jeu
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+partie = Jeu(3) # lancer une partie de niveau 3 (1 : lancer franc connu, 2 : lancer franc à vitesse aléatoire, 3 : lancer qq)
+[v0, balle, panier] = partie.get_partie()  # récupérer les informations de la partie
+
+partie.simulation(30) # réaliser le lancer d''angle 30° (angle en degree)

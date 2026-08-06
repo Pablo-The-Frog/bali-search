@@ -1,0 +1,25 @@
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import Qt
+from game_logic import Game, Snake
+from game_ui import GameWidget
+import sys
+
+app = QApplication(sys.argv)
+
+# création des serpents
+pnj = Snake(is_ia=True, name='IA1')
+player = Snake((2,2),is_ia=True, name='player')
+
+keymap = {
+    Qt.Key.Key_Up: lambda: player.set_direction((0,-1)),
+    Qt.Key.Key_Down: lambda: player.set_direction((0,1)),
+    Qt.Key.Key_Left: lambda: player.set_direction((-1,0)),
+    Qt.Key.Key_Right: lambda: player.set_direction((1,0)),
+}
+
+jeu = Game([pnj, player], 20, 20, 1)
+window = GameWidget(jeu, keymap)
+window.show()
+app.exec()
+
+

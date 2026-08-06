@@ -1,0 +1,41 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+l = 3.0
+ul = 0.1
+h = 2.2
+uh = 0.2
+
+# valeur la plus probable
+D = np.sqrt(l**2 + h**2)
+print("Valeur de D la plus probable : D = ", D)
+
+
+## =====
+# Monte-Carlo
+# =====
+# Expériences
+N = 10000
+
+lsim = np.random.uniform(low=l-ul, high=l+ul, size=N) # créé N expériences différentes pour l
+hsim = np.random.uniform(low=h-uh, high=h+uh, size=N) # créé N expériences différentes pour h
+Dsim = np.sqrt(lsim**2 + hsim**2)  # calcul pour chaque expérience la valeur de D
+
+# détermination des incertitudes
+Dm = np.mean(Dsim)
+uD = np.std(Dsim, ddof=1)
+print("Valeur de D par la méhtode de Monte-Carlo D = ", Dm, "±", uD)
+
+# Affichage avancé avec le nombre de CS
+print(f"Valeur de D par la méhtode de Monte-Carlo D = {Dm:.1e} ± {uD:.1e}") # voir format string avec python
+
+# affichage de l'histogramme (facultatif)
+plt.hist(Dsim, bins=20, color='k', histtype='step')
+plt.axvline(Dm, color='r', ls='--') # moyenne
+plt.axvline(Dm+uD, color='r', ls='--') # incertitude
+plt.axvline(Dm-uD, color='r', ls='--')
+plt.xlabel('D')
+plt.ylabel('effectif')
+plt.savefig('hist.png', dpi=600)
+plt.show()
+    

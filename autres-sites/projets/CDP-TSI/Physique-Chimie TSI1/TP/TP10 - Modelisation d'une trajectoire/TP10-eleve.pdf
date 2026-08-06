@@ -1,0 +1,357 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "7cf52f1f-5252-4a41-8056-0be86c810cc4",
+   "metadata": {},
+   "source": [
+    "# TP10 - Analyse de trajectoire\n",
+    "\n",
+    "Dans ce TP nous analysons la trajectoire d'un volant de badminton. Ce code est une ébauche qu'il faudra compléter.\n",
+    "\n",
+    "Il faudra compléter toutes les lignes où il est écrit : \n",
+    "\n",
+    "<p style=\"text-align:center; color:red\">## -->  à compléter <--</p>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7202e3b0-4e21-4b4c-bc08-51bab13d225f",
+   "metadata": {},
+   "source": [
+    "### Import des bibliothèques"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7567397f-44d6-4cc5-86c2-647627cd2498",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "694619bc-bcef-4d23-9a68-c8e03e1f90a8",
+   "metadata": {},
+   "source": [
+    "### Paramètres expérimentaux"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03032821-8d6d-452a-8440-3e3df31a434a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m =  # masse du volant en kg ## -->  à compléter <--\n",
+    "g =  # accélération de pesanteur ## -->  à compléter <--\n",
+    "Te =  # intervalle de temps entre deux images (s) ## -->  à compléter <--"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1b25ca0d-9fe2-4cf1-b8f0-b67ae68be780",
+   "metadata": {},
+   "source": [
+    "## 1.2 Récupération des données issues de ImageJ"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d5013573-43b3-469c-8638-ccfe41c0c3ad",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "p = np.loadtxt('Results.csv', delimiter=\",\", skiprows=1) ## -->  à compléter <-- préciser le nom de votre fichier\n",
+    "\n",
+    "t = p[:,0]*Te - Te # défintion de la base de temps\n",
+    "x_exp, y_exp = p[:,1], p[:,2] # chargement des données de positions selon x et y.\n",
+    "\n",
+    "# center la position de départ sur l'origine\n",
+    "x_exp = x_exp-x_exp[0] # translation de toutes les positions selon x\n",
+    "y_exp =  # translation de toutes les positions selon y ## -->  à compléter <--\n",
+    "\n",
+    "plt.figure(figsize=(10,10))\n",
+    "plt.tight_layout()\n",
+    "\n",
+    "ax0 = plt.subplot(211)\n",
+    "ax0.plot(x_exp, y_exp, '.-r')\n",
+    "ax0.grid()\n",
+    "ax0.set_title('Trajectoire')\n",
+    "ax0.set_xlabel('x (m)')\n",
+    "ax0.set_ylabel('y (m)')\n",
+    "\n",
+    "ax1 = plt.subplot(223)\n",
+    "ax1.plot(t,y_exp, '--b')\n",
+    "ax1.set_xlabel('t (s)')\n",
+    "ax1.set_ylabel('y (m)')\n",
+    "ax1.grid()\n",
+    "\n",
+    "ax2 = plt.subplot(224)\n",
+    "ax2.plot(t,x_exp, '--g')\n",
+    "ax2.set_xlabel('t (s)')\n",
+    "ax2.set_ylabel('x (m)')\n",
+    "ax2.grid()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e5901be0-8e42-4aa1-bed8-5b6e5afea31d",
+   "metadata": {},
+   "source": [
+    "## 1.3 Détermination de $V_0$, $\\theta_0$ et $V_{lim}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "24958789-830e-4efa-bd6c-775d4597dfc9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# dérivée de la trajectoire\n",
+    "for i in range(len(x)-1):\n",
+    "    vx = (x[i+1] - x[i])/Te\n",
+    "    vy =    # à compléter.\n",
+    "\n",
+    "v = np.sqrt((dotx**2 + doty**2))\n",
+    "theta = np.arctan(doty/dotx)\n",
+    "\n",
+    "plt.figure(figsize=(10,4))\n",
+    "plt.tight_layout()\n",
+    "ax0 = plt.subplot(121)\n",
+    "ax0.grid()\n",
+    "ax0.set_xlabel('t (s)')\n",
+    "ax0.set_ylabel('v (m/s)')\n",
+    "plt.plot(t[:-1], v, '.-r')\n",
+    "ax1 = plt.subplot(122)\n",
+    "plt.plot(t[:-1],theta,'.-b')\n",
+    "ax1.grid()\n",
+    "ax1.set_xlabel('t (s)')\n",
+    "ax1.set_ylabel(r'$\\theta$ (rad)')\n",
+    "\n",
+    "print('V0 =', )  ## -->  à compléter <--\n",
+    "print('Vlim =', ) ## -->  à compléter <--\n",
+    "print('theta_0 = ', )  ## -->  à compléter <-- /!\\ à l'unité ! \n",
+    "v0 = v[0]\n",
+    "theta0 = theta[0]\n",
+    "vlim = v[-1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f3b55266-c935-4e30-8ebf-76553c59048a",
+   "metadata": {},
+   "source": [
+    "## 2. Modélisation numérique de la trajectoire\n",
+    "### 2.1 Modèle sans frottements"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e6cb1a8a-bba3-4c15-bdd2-1c09912f08dc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x_sf = ## -->  à compléter <--\n",
+    "y_sf = ## -->  à compléter <--\n",
+    "\n",
+    "# tracé\n",
+    "plt.figure(figsize=(10,6))\n",
+    "plt.tight_layout()\n",
+    "\n",
+    "ax0 = plt.subplot(211)\n",
+    "ax0.plot(x_exp, y_exp, '.-r')\n",
+    "ax0.plot(x_sf, y_sf, '-k')\n",
+    "ax0.grid()\n",
+    "ax0.set_title('Trajectoire')\n",
+    "ax0.set_xlabel('x (m)')\n",
+    "ax0.set_ylabel('y (m)')\n",
+    "\n",
+    "ax1 = plt.subplot(223)\n",
+    "ax1.plot(t,y_exp, '--b')\n",
+    "ax1.plot(t,y_sf, '-k')\n",
+    "ax1.set_xlabel('t (s)')\n",
+    "ax1.set_ylabel('y (m)')\n",
+    "ax1.grid()\n",
+    "\n",
+    "ax2 = plt.subplot(224)\n",
+    "ax2.plot(t,x_exp, '--g')\n",
+    "ax2.plot(t,x_sf, '-k')\n",
+    "ax2.set_xlabel('t (s)')\n",
+    "ax2.set_ylabel('x (m)')\n",
+    "ax2.grid()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ba892d0f-2e21-4ac0-98fb-6544b48e9cc7",
+   "metadata": {},
+   "source": [
+    "### 2.2 Modèle de frottement linéaire\n",
+    "\n",
+    "$$\\overrightarrow{v} = \\left(\\overrightarrow{v}_0 - \\tau\\overrightarrow{g}\\right) \\exp\\left(\\dfrac{-t}{\\tau}\\right) + \\tau\\overrightarrow{g}$$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fe0fcbe4-007b-43fe-9861-07815b616ed3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# détermination de lambda\n",
+    "lamb = ## -->  à compléter <--\n",
+    "print('lambda = ', lamb, 'unité ?') ## -->  à compléter <-- # compléter l'unité\n",
+    "\n",
+    "# détermination de la vitesse\n",
+    "tau =  ## -->  à compléter <--\n",
+    "\n",
+    "# Détermination de la vitesse\n",
+    "## initialisation des tableaux de données\n",
+    "v_fl_x = np.zeros_like(t)\n",
+    "v_fl_y = np.zeros_like(t)\n",
+    "## boucle de calcul\n",
+    "for i in range(len(t)):\n",
+    "    v_fl_x[i] = ## -->  à compléter <--\n",
+    "    v_fl_y[i] = ## -->  à compléter <--\n",
+    "\n",
+    "# détermination de la position\n",
+    "## intialisation des tableaux de données\n",
+    "x_fl = np.zeros_like(t)\n",
+    "y_fl = np.zeros_like(t)\n",
+    "## boucle de calcul\n",
+    "for i in range(1,len(t)):\n",
+    "    x_fl[i] = ## -->  à compléter <--\n",
+    "    y_fl[i] = ## -->  à compléter <--\n",
+    "\n",
+    "\n",
+    "# tracé\n",
+    "plt.figure(figsize=(10,6))\n",
+    "plt.tight_layout()\n",
+    "\n",
+    "ax0 = plt.subplot(211)\n",
+    "ax0.plot(x_exp, y_exp, '.-r')\n",
+    "ax0.plot(x_fl, y_fl, '-k')\n",
+    "ax0.grid()\n",
+    "ax0.set_title('Trajectoire')\n",
+    "ax0.set_xlabel('x (m)')\n",
+    "ax0.set_ylabel('y (m)')\n",
+    "\n",
+    "ax1 = plt.subplot(223)\n",
+    "ax1.plot(t,y_exp, '--b')\n",
+    "ax1.plot(t,y_fl, '-k')\n",
+    "ax1.set_xlabel('t (s)')\n",
+    "ax1.set_ylabel('y (m)')\n",
+    "ax1.grid()\n",
+    "\n",
+    "ax2 = plt.subplot(224)\n",
+    "ax2.plot(t,x_exp, '--g')\n",
+    "ax2.plot(t,x_fl, '-k')\n",
+    "ax2.set_xlabel('t (s)')\n",
+    "ax2.set_ylabel('x (m)')\n",
+    "ax2.grid()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2d65bbc6-c45b-4b9a-94d6-874de4543d1f",
+   "metadata": {},
+   "source": [
+    "### 2.3 Modèle quadratique"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6721f769-1df2-4336-b55b-008ece973be4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# détermination de mu\n",
+    "mu = ## -->  à compléter <--\n",
+    "print('mu = ', mu, '_unité_') ## -->  à compléter <-- # à compélter l'unité !\n",
+    "\n",
+    "# Initialisation des tableaux\n",
+    "## Taille des tableaux\n",
+    "v_fq_x = np.zeros_like(t)\n",
+    "v_fq_y = np.zeros_like(t)\n",
+    "x_fq = np.zeros_like(t)\n",
+    "y_fq = np.zeros_like(t)\n",
+    "\n",
+    "## valeurs initiales\n",
+    "v_fq_x[0] = ## -->  à compléter <--\n",
+    "v_fq_y[0] = ## -->  à compléter <--\n",
+    "x_fq[0] = 0\n",
+    "y_fq[0] = 0\n",
+    "\n",
+    "delta = ## -->  à compléter <--\n",
+    "\n",
+    "for i in range(1,len(t)):\n",
+    "    # position +1\n",
+    "    x_fq[i] = ## -->  à compléter <--\n",
+    "    y_fq[i] = ## -->  à compléter <--\n",
+    "    \n",
+    "    # vitesse +1\n",
+    "    v = # norme de la vitesse à l'instant i-1 ## -->  à compléter <--\n",
+    "    v_fq_x[i] =  ## -->  à compléter <--\n",
+    "    v_fq_y[i] = ## -->  à compléter <--\n",
+    "\n",
+    "\n",
+    "# Visualisation\n",
+    "plt.figure(figsize=(10,6))\n",
+    "plt.tight_layout()\n",
+    "\n",
+    "ax0 = plt.subplot(211)\n",
+    "ax0.plot(x_exp, y_exp, '.-r')\n",
+    "ax0.plot(x_fq, y_fq, '-k')\n",
+    "ax0.grid()\n",
+    "ax0.set_title('Trajectoire')\n",
+    "ax0.set_xlabel('x (m)')\n",
+    "ax0.set_ylabel('y (m)')\n",
+    "\n",
+    "ax1 = plt.subplot(223)\n",
+    "ax1.plot(t,y_exp, '--b')\n",
+    "ax1.plot(t,y_fq, '-k')\n",
+    "ax1.set_xlabel('t (s)')\n",
+    "ax1.set_ylabel('y (m)')\n",
+    "ax1.grid()\n",
+    "\n",
+    "ax2 = plt.subplot(224)\n",
+    "ax2.plot(t,x_exp, '--g')\n",
+    "ax2.plot(t,x_fq, '-k')\n",
+    "ax2.set_xlabel('t (s)')\n",
+    "ax2.set_ylabel('x (m)')\n",
+    "ax2.grid()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

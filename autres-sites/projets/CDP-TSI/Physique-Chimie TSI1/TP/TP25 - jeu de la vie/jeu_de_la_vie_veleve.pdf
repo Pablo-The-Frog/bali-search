@@ -1,0 +1,67 @@
+"""
+jeu_de_la_vie.py — Fichier élève (solution)
+=========================================================
+Règles du Jeu de la Vie (Conway) :
+    - Une cellule VIVANTE (1) avec 2 ou 3 voisins vivants → reste vivante
+    - Une cellule MORTE  (0) avec exactement 3 voisins vivants → devient vivante
+    - Tous les autres cas → cellule morte (0)
+"""
+
+# from affichage import Affichage # laisser commenter
+import matplotlib.pyplot as plt
+
+
+# ===========================================================
+# PARTIE 1 — Grille initiale
+# ===========================================================
+
+# construction grille
+grille_init = [] # à compléter
+
+# affichage
+plt.figure()
+plt.imshow(grille_init)
+
+
+# ===========================================================
+# PARTIE 2 — Comptage des voisins
+# ===========================================================
+def compter_voisins(grille, i, j):
+    """
+    Compte les voisins vivants de la cellule (i, j).
+    Les cellules hors de la grille sont considérées mortes.
+    """
+    count = 0
+    # à compléter
+    return count
+
+
+# ===========================================================
+# PARTIE 3 — Règle d'actualisation
+# ===========================================================
+
+def update(grille):
+    """
+    Calcule et retourne la grille à l'étape suivante.
+    """
+    nb_lignes = len(grille)
+    nb_colonnes = len(grille[0])
+    nouvelle_grille = [ligne[:] for ligne in grille] # copie un tableau python
+    
+
+    
+    # à compléter
+    
+    return nouvelle_grille
+
+
+# ===========================================================
+# Lancement
+# ===========================================================
+grille = grille_init
+for k in range(3):
+    plt.figure()
+    plt.imshow(grille)
+    plt.grid()
+    grille = update(grille)
+plt.show()

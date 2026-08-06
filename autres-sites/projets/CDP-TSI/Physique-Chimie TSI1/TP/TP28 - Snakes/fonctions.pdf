@@ -1,0 +1,39 @@
+def add_tuple(t1, t2):
+    """_summary_
+
+    Args:
+        t1 (tuple): tuple 1
+        t2 (tuple): tuple 2
+    """
+    return tuple(map(lambda x,y:x+y, t1, t2))
+
+def diff_tuple(t1, t2):
+    """_summary_
+
+    Args:
+        t1 (tuple): tuple 1
+        t2 (tuple): tuple 2
+
+    Returns:
+        tuple: retourne un tuple qui est la différence terme à terme de t1 et t2.
+    """
+    return tuple(map(lambda x,y: x - y,t1,t2))
+
+
+def mult_tuple(t,k):
+    """_summary_
+
+    Args:
+        t (tuple): le tuple à mutlplier terme à terme
+        k (float or int): scalar
+    """
+    return tuple([k*x for x in t])
+
+def manhattan_distance(t1, t2):
+    """_summary_
+
+    Args:
+        t1 (tuple): position 1
+        t2 (duple): position 2
+    """
+    return abs(t1[0] - t2[0]) + abs(t1[1] - t2[1])
