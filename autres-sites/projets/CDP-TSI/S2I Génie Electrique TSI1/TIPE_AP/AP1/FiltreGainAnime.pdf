@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+"""
+Signal informatif 0.1V 1kHz + Parasite 50mV 25kHz
+Filtrage passe-bas Ordre 1 fc = 5kHz
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider
+
+Fs=1000 # Fréquence signal sinus 1kHz
+As=0.1 # Amplitude signal sinus 100mV
+tmax=5E-3 # 5ms soit 5 périodes
+n=5000 # 5000 points de calcul
+Te=tmax/n # période d'échantillonnage
+initial_freq=5000 # Fréquence de coupure passe-bas
+To=1/(2*np.pi*initial_freq)
+
+t=np.linspace(0,tmax,n) # liste de valeurs de temps en s
+signal=As*np.sin(2*np.pi*Fs*t)
+
+filtre1=np.array([0.0])
+for i in range(n-1):
+    filtre1=np.append(filtre1,(Te/(To+Te))*signal[i+1]+(To/(To+Te))*filtre1[i])
+
+plt.subplot(2,2,1)
+plt.plot(t,signal,color='b',linewidth='2')
+sf,=plt.plot(t,filtre1,color='black',linewidth='2')
+plt.grid()
+plt.title("Filtre passe-bas ordre 1")
+plt.xlabel("Temps(s)")
+plt.ylabel("Entrée bleu Sortie noir (V)")
+
+plt.subplot(2,2,2)
+plt.grid(color='g',linestyle='--')
+plt.ylim(-0.2,0.2)
+plt.xlim(-0.2,0.2)
+plt.show()
+
+plt.subplot(2,2,3)
+freq=np.linspace(10,100000,10000)
+G=-20*np.log10(np.sqrt(1+np.square(freq/initial_freq)))
+gain,= plt.plot(freq,G,color='b',linewidth='3')
+plt.grid(color='g',linestyle='--')
+plt.xlabel("Fréquence (Hz)")
+plt.ylabel("Gain(dB)")
+plt.semilogx()
+
+plt.subplot(2,2,4)
+phi=-(180/np.pi)*np.arctan(freq/initial_freq)
+phase,= plt.plot(freq,phi,color='b',linewidth='3')
+plt.grid(color='g',linestyle='--')
+plt.xlabel("Fréquence (Hz)")
+plt.ylabel("Phase (°)")
+plt.semilogx()
+
+
+ax = plt.axes([0.25, .03, 0.50, 0.02])
+f = Slider(ax, 'Fréquence de coupure Fc(Hz)', 1000, 25000, valinit=initial_freq)
+
+def update(val):
+    newfreq = f.val
+    To=1/(2*np.pi*newfreq)
+    filtre1=np.array([0.0])
+    for i in range(n-1):
+        filtre1=np.append(filtre1,(Te/(To+Te))*signal[i+1]+(To/(To+Te))*filtre1[i])
+    sf.set_ydata(filtre1)
+    G=-20*np.log10(np.sqrt(1+np.square(freq/newfreq)))
+    phi=-(180/np.pi)*np.arctan(freq/newfreq)
+    gain.set_ydata(G)
+    phase.set_ydata(phi)
+    fig.canvas.draw_idle()
+f.on_changed(update)

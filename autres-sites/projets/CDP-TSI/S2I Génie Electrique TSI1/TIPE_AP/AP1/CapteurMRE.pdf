@@ -1,0 +1,17 @@
+//******************************************************************
+// NA15 NAOtronics Détection - acquisition des données du MRE sur bus SSI
+
+#include <AS5045.h>  // Penser à importer la librairie
+
+AS5045 myAS5045(2,3,4); // création de l'objet avec en paramètres : data, clock, chip select
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  long value;
+  value = myAS5045.encoder_degrees();
+  Serial.println(value);
+  delay(100);
+}

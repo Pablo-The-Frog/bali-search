@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+"""Tracé des caractéristiques Vitesse, Puissance, rendement en fonction du Couple résistant"""
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+R=0.66 # Résistance induit (rotor)
+k=39.1e-3 # Constante de couple ki ou de vitesse ke
+Cp=4.7e-3 # Couple de pertes considéré constant
+Um=24 # Tension nominale moteur 
+
+Vmax= 5800 # Vitesse maximale à vide en tr/min  , couple nul
+Cmax = 1.421  # Couple de démarrage en Nm à vitesse nulle
+
+'Cette fonction prend comme arguments la vitesse et le couple et renvoie la tension'
+def tension(vitesse:float,couple:float):
+    return R*couple/k + k*vitesse # Modèle RE avec vitesse en rad/s
+
+'Test de la fonction sur deux cas connus Couple max et vitesse max'
+print(tension(Vmax*np.pi/30,0)) # Renvoie +24V
+print(tension(0,Cmax)) # Renvoie +24V
+
+
+Cmax=k*Um/R # Calcul couple de démarrage
+Couple_resistant=np.linspace(0,Cmax,1000) # 1000 valeurs de couple 
+Couple_moteur=Couple_resistant+Cp # Pas de frottements fluides
+Couple_utile=Couple_resistant  # Régime permanent
+vitesse= 30*(Um - R*Couple_moteur/k)/(k*np.pi) # Relation vitesse = f(couple)
+
+plt.subplot(2,2,1)
+plt.plot(Couple_utile,vitesse,color='b',linewidth='3')
+plt.grid(color='grey', linestyle='-', linewidth=1)
+plt.xlabel("Couple moteur(Nm)")
+plt.ylabel("Vitesse en tr/min")
+
+plt.subplot(2,2,2)
+puis_abs=Um*Couple_moteur/k
+puis_joule=R*(Couple_moteur/k)**2
+plt.plot(Couple_utile,puis_abs,color='grey',linewidth='3')
+plt.plot(Couple_utile,puis_joule,color='red',linewidth='3')
+plt.grid(color='grey', linestyle='-', linewidth=1)
+plt.xlabel("Couple moteur(Nm)")
+plt.ylabel("Puissance absorbée et pertes Joule(W)")
+
+plt.subplot(2,2,3)
+puis_utile= Couple_utile*vitesse*np.pi/30
+plt.plot(Couple_utile,puis_utile,color='green',linewidth='3')
+plt.grid(color='grey', linestyle='-', linewidth=1)
+plt.xlabel("Couple moteur(Nm)")
+plt.ylabel("Puissance utile (W)")
+
+plt.subplot(2,2,4)
+rend=puis_utile/puis_abs
+plt.plot(Couple_utile,rend,color='black',linewidth='3')
+plt.grid(color='grey', linestyle='-', linewidth=1)
+plt.xlabel("Couple moteur(Nm)")
+plt.ylabel("Rendement (%)")
+plt.show()
+
+

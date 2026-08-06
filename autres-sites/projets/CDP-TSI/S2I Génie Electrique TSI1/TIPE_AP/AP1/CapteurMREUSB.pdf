@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+"""
+@author: Eric
+"""
+print("\nCapteur d'angle MRE robot Nao avec com Arduino Uno \n")
+import serial
+angle=1
+port = "COM4"
+baud = 9600
+ser = serial.Serial(port, baud, timeout=1)
+    
+#open the serial port
+if ser.isOpen():
+      print(ser.name + ' ouvert\n')
+while(angle!=0):
+    out2 = ser.read()
+    while (out2.decode("utf-8"))!="\n":
+        out2= ser.read()
+    cent1= ser.read()
+    diz1=ser.read()
+    unit1=ser.read()
+    #print(cent1,diz1,unit1)
+    cent=cent1.decode("utf-8")
+    diz=diz1.decode("utf-8")
+    unit=unit1.decode("utf-8")
+    #print(cent,diz,unit)
+    if unit=='\n':unit='\r'
+    if diz=='\n':diz='\r'
+    if (diz!='\r') and (unit=='\r'):
+        unit,diz,cent=diz,cent,'0'
+    if (diz=='\r') and (unit=='\r'):
+        unit,diz,cent=cent,'0','0'
+    angle=int(cent)*100+int(diz)*10+int(unit)
+    print("Angle entre torse et jambes: ",angle,"degrés")
+ser.close()
+
+print("\nAngle = 0 COM fermé programme terminé \n")
