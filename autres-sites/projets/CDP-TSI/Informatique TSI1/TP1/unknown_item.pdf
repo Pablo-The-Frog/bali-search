@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <title>Documents à télécharger - Informatique TSI1</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.min.css?v=1202">
+  <link rel="stylesheet" href="css/icones.min.css?v=1200">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/commun.min.js?v=1200"></script>
+  <link rel="alternate" type="application/rss+xml" title="Flux RSS" href="rss/5a598d88e4a0a0f84cb7/rss.xml">
+</head>
+<body data-csrf-token="16c38eec3a27a9482de6b8d6710ca52b94033c89265d4aa29fee445a5da0f84f">
+
+<header><h1>Documents à télécharger - Informatique TSI1</h1></header>
+
+<nav>
+  <div id="iconesmenu">
+    <a class="icon-menu" title="Afficher le menu"></a>
+    <a class="icon-accueil" href="." title="Revenir à la page d'accueil"></a>
+    <a class="icon-recent" href="recent" title="Voir les 0 nouveaux contenus">0</a>
+    <a class="icon-rep" id="actuel2" href="docs" title="Voir les documents à télécharger"></a>
+    <a class="icon-progcolles" href="progcolles" title="Voir les programmes de colles"></a>
+    <a class="icon-agenda" href="agenda" title="Voir l'agenda"></a>
+    <a class="icon-mail" href="mail" title="Envoyer un mail"></a>
+    <a class="icon-transfert" href="transferts" title="Transférer des documents"></a>
+    <a class="icon-notescolles" href="notescolles" title="Consulter les notes de colles"></a>
+    <a class="icon-deconnexion" title="Se déconnecter"></a>
+  </div>
+  <div id="menu">
+    <hr>
+    <a href="docs?general"><span class="icon-rep"></span>&nbsp;Documents généraux</a>
+     <h3>Anglais TSI 1</h3>
+    <a href=".?Anglais_TSi1/Informations_anglais_TSI">Informations ANGLAIS TSI 1</a>
+    <a href="docs?Anglais_TSi1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <a href="transferts?Anglais_TSi1"><span class="icon-transfert"></span>&nbsp;Transfert de documents</a>
+    <a href="notescolles?Anglais_TSi1"><span class="icon-notescolles"></span>&nbsp;Notes de colles</a>
+    <h3>Français TSI1</h3>
+    <a href="docs?F_TSI1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <a href="notescolles?F_TSI1"><span class="icon-notescolles"></span>&nbsp;Notes de colles</a>
+    <h3>Informatique TSI1</h3>
+    <a id="actuel" href="docs?Informatique_TSI1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <h3>Mathématiques TSI 1</h3>
+    <a href="progcolles?Maths-TSI1"><span class="icon-progcolles"></span>&nbsp;Programme de colles</a>
+    <a href="docs?Maths-TSI1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <a class="menurep" href="docs?rep=192">Cours et TD</a>
+    <a href="notescolles?Maths-TSI1"><span class="icon-notescolles"></span>&nbsp;Notes de colles</a>
+    <h3>Physique-Chimie TSI1</h3>
+    <a href=".?PC-TSI1/infoPCTSI1">Informations PC TSI1</a>
+    <a href="progcolles?PC-TSI1"><span class="icon-progcolles"></span>&nbsp;Programme de colles</a>
+    <a href="docs?PC-TSI1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <a class="menurep" href="docs?rep=191">1 - Optique</a>
+    <a class="menurep" href="docs?rep=210">2 - Électrocinétique</a>
+    <a class="menurep" href="docs?rep=231">3 - Chimie</a>
+    <a class="menurep" href="docs?rep=235">4 - Mécanique</a>
+    <a class="menurep" href="docs?rep=241">5 - Physique des ondes</a>
+    <a class="menurep" href="docs?rep=300">6 - Thermodynamique</a>
+    <a class="menurep" href="docs?rep=321">7 - Électromagnétisme</a>
+    <a class="menurep" href="docs?rep=179">DM</a>
+    <a class="menurep" href="docs?rep=178">DS</a>
+    <a class="menurep" href="docs?rep=181">Fiches Outils</a>
+    <a class="menurep" href="docs?rep=445">Python pour la PC</a>
+    <a class="menurep" href="docs?rep=180">TP</a>
+    <a href="transferts?PC-TSI1"><span class="icon-transfert"></span>&nbsp;Transfert de documents</a>
+    <a href="notescolles?PC-TSI1"><span class="icon-notescolles"></span>&nbsp;Notes de colles</a>
+    <h3>S2I Génie Électrique TSI1</h3>
+    <a href="docs?S2I-GE-1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <a href="notescolles?S2I-GE-1"><span class="icon-notescolles"></span>&nbsp;Notes de colles</a>
+    <h3>S2I Génie Mécanique TSI1</h3>
+    <a href="docs?S2I-GM-1"><span class="icon-rep"></span>&nbsp;Documents à télécharger</a>
+    <a href="notescolles?S2I-GM-1"><span class="icon-notescolles"></span>&nbsp;Notes de colles</a>
+    <hr>
+    <a href="prefs"><span class="icon-prefs"></span>&nbsp;Mes préférences</a>
+    <a href="blogcdp"><span class="icon-messages"></span>&nbsp;Le blog de CdP</a>
+  </div>
+</nav>
+
+<section>
+  <article class="centre">
+    <video src="download?id=2038&amp;v=1b797&amp;inline" type="video/mp4" controls>Votre navigateur n'affiche pas les fichiers video en HTML5.</video>
+  </article>
+
+  <article>
+    <h4>Détails du document</h4>
+    <p><strong>Titre</strong>&nbsp;: TutorielSpyder</p>
+    <p><strong>Taille</strong>&nbsp;: 408&nbsp;Mo</p>
+    <p><strong>Publication</strong>&nbsp;: Jeudi 11 septembre 2025</p>
+    <p class="centre"><a class="icon-download" href="download?id=2038&amp;v=1b797&amp;dl" title="Télécharger ce document"></a></p>
+  </article>
+
+</section>
+
+<footer>Ce site est réalisé par le logiciel <a href="https://cahier-de-prepa.fr">Cahier de prépa</a>, publié sous <a href="Licence_CeCILL_V2-fr.html">licence libre</a>.&nbsp;<span class="icon-theme" title="Changer le thème lumineux/sombre"></span>&nbsp;<a class="icon-python" href="/basthon" title="Coder en Python directement dans votre navigateur"></a></footer>
+
+<div id="load"><img src="js/ajax-loader.gif"></div>
+<script type="text/javascript" src="js/lecture.min.js?v=1210"></script>
+
+<script type="text/javascript" src="/zfiles/mtm.min.js"></script>
+</body>
+</html>

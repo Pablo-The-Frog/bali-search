@@ -1,0 +1,669 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Scripts élémentaires en Python3: utilisation de variables, de boucles, de tests, de listes, de tuples et de fonctions. Traitement de fichiers de type texte."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "###Opérations sur variables int, float, bool"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a=2\n",
+    "b=5\n",
+    "print (a+b,a-b,a*b,b//a,b%a,b**a,abs(a-b),float(a))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "x=3.55\n",
+    "y=2.0\n",
+    "print (type(x),int(x),complex(x,y),x/y,round(x),round(x,1),3.55E-1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "moi=True\n",
+    "toi=False\n",
+    "print (moi and toi,moi or toi, not toi,moi==toi,moi!=toi,moi and (toi==( not moi)))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Les tuples sont des listes de variables dont le contenu est immuable."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "t=(1,2,3,4)\n",
+    "s=(2.5,3.6,5,8)\n",
+    "mix=('Marc',28,6.35,'07568941')\n",
+    "print (t[0],len(s),t+s,(5 in t),mix)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Les listes sont modifiables et leurs contenus peuvent être aussi hétérogènes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "prenoms=['Claude','Jeff','Gaston']\n",
+    "ages=[20,25,24]\n",
+    "poids=[65.3,57.8,86.2]\n",
+    "print (prenoms[0],ages[0],poids[0])\n",
+    "ages[1]=22\n",
+    "print (ages)\n",
+    "print (poids[0:1],poids[1:3],len(prenoms))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Les chaînes de  caractères sont immuables et délimitées par des ' ou des \"."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "animal='cheval'\n",
+    "race='Pur sang'\n",
+    "sexe='femelle'\n",
+    "print (animal+race+sexe)\n",
+    "print (\"Mon cheval est un \",race,\"\\nde sexe \",sexe)\n",
+    "print (animal[3:5],len(race),\"r\" in sexe)\n",
+    "print( race.lower(),sexe.upper(),ord(\"A\"),chr(65))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a=int(input(\"Entrez un entier:\"))\n",
+    "print (a)\n",
+    "b=float(input(\"Entrez un reel:\"))\n",
+    "print (b)\n",
+    "chaine=input(\"Saisir votre nom:\")\n",
+    "print (chaine)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Test conditionnel if condition faire sinon faire ..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "if 5%2!=0:\n",
+    "    print (\"Yes!\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "if 5%2==0:\n",
+    "    print (\"Yes!\")\n",
+    "else:\n",
+    "    print (\"Oups!\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Boucle conditionnelle: Tant que condition faire..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a=0\n",
+    "while a<6:\n",
+    "    print(a**2)\n",
+    "    a=a+2\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a=0\n",
+    "while a<6:\n",
+    "    a=a+2\n",
+    "print(a)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Boucle inconditionnelle: Pour i de min à max, faire ...."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "for i in range(5):\n",
+    "    print (i)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "for i in range(10,15):\n",
+    "    print (i*2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "for i in range(4,10,2):\n",
+    "    print (i)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Déclaration et appel d'une fonction"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def cube(w):\n",
+    "    return w**3\n",
+    "print (cube(2),cube(3))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def tablemulti(base,debut,fin):\n",
+    "    n=debut\n",
+    "    while n<=fin:\n",
+    "        print (n,\"x\",base,\"=\",n*base)\n",
+    "        n=n+1\n",
+    "tablemulti(2,4,6)\n",
+    "tablemulti(3,5,8)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Opérations sur chaînes de caractères"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "trame=\"$GPRMC,071139.988,A,4639.8232,N,00021.6810,E,8.95,184.14,141014,1.1,W,A*65\"\n",
+    "\n",
+    "champs=trame.split(\",\")\n",
+    "print(champs)\n",
+    "print(\"\\n\\nLatitude brute=\",champs[3])\n",
+    "print(\"Latitude en degrés=\",float(champs[3])/100,\"°\",champs[4])\n",
+    "checksum=champs[-1].split(\"*\")\n",
+    "print(\"checksum =\",int(checksum[1]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Création d'une liste"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "tailles=[]\n",
+    "for taille in range (36,48,2):\n",
+    "    tailles.append(taille)\n",
+    "print(tailles)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "liste=[]\n",
+    "liste.append('Marc')\n",
+    "liste.append('Sophie')\n",
+    "print(liste)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ouverture d'un fichier,écriture et fermeture"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "file=open('materiel.txt','w')\n",
+    "file.write('Ordinateur portable;10\\n')\n",
+    "file.write('Imprimante couleurs;1\\n')\n",
+    "file.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ouverture d'un fichier en lecture, lecture et fermeture"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "file=open('materiel.txt','r')\n",
+    "ligne1=file.readline()\n",
+    "print(ligne1)\n",
+    "file.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ouverture d'un fichier en lecture, récupération des lignes dans une liste, traitement et fermeture"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "file=open('materiel.txt','r')\n",
+    "contenu=[]\n",
+    "for ligne in file:\n",
+    "    contenu.append(ligne)\n",
+    "file.close()\n",
+    "##print(contenu)\n",
+    "data=contenu[1].split(';')\n",
+    "print(\"Type de matériel: \"+data[0]+\" Quantité: \"+data[1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Création d'une image noir et blanc de format 9 lignes 9 colonnes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "jupyter": {
+     "outputs_hidden": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "dam = open('damier.pbm','w')\n",
+    "dam.write(\"P1#\\n\")\n",
+    "dam.write(\"9 9\\n\")\n",
+    "for i in range(81):\n",
+    "    if i%2==0:\n",
+    "        dam.write(\"0\")\n",
+    "    else:\n",
+    "        dam.write(\"1\")\n",
+    "dam.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Création d'une image en niveaux de gris aléatoires 9 par 9 "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from random import randint\n",
+    "alea = open('aleatoire.pgm','w')\n",
+    "alea.write(\"P2#\\n9 9\\n\")\n",
+    "for i in range(81):\n",
+    "    alea.write(str(randint(1,255))+\"\\n\")\n",
+    "alea.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Création d'une image RGB aléatoire 9 par 9 "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "jupyter": {
+     "outputs_hidden": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from random import randint\n",
+    "rgb = open('image_couleur.pnm','w')\n",
+    "rgb.write(\"P3#\\n9 9\\n255\\n\")\n",
+    "for i in range(81):\n",
+    "    rgb.write(str(randint(1,255))+\"\\n\")\n",
+    "    rgb.write(str(randint(1,255))+\"\\n\")\n",
+    "    rgb.write(str(randint(1,255))+\"\\n\")\n",
+    "rgb.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Importation depuis internet et affichage d'une image jpg"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from IPython.display import Image\n",
+    "Image(url=\"https://media.licdn.com/mpr/mpr/p/1/005/0af/3b7/276e9b6.jpg\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ouverture et affichage d'un fichier audio de type .wav"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import wave,sys\n",
+    "spf = wave.open(\"D:/WinPython-64bit-3.4.3.5/notebooks/coeur.wav\",'r')\n",
+    "#Extract Raw Audio from Wav File\n",
+    "signal = spf.readframes(-1)\n",
+    "signal = np.fromstring(signal, 'Int16')\n",
+    "fs = spf.getframerate()\n",
+    "print(\"Fréquence d'échantillonnage: \",fs,\"Hz   Samples:\",len(signal), \"Durée en seconde:\",len(signal)/fs)\n",
+    "#If Stereo\n",
+    "if spf.getnchannels() == 2:\n",
+    "    print('Uniquement les fichiers mono!')\n",
+    "    sys.exit(0)\n",
+    "Time=np.linspace(0, len(signal)/fs, num=len(signal))\n",
+    "plt.figure(1)\n",
+    "plt.title('Battements du coeur')\n",
+    "plt.plot(Time,signal)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "jupyter": {
+     "outputs_hidden": true
+    }
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

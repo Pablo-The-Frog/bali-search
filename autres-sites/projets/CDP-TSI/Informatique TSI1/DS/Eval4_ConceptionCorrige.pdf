@@ -1,0 +1,284 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "0427dcfd-292f-41c3-9a49-25eb9fb79338",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Objectif: concevoir et écrire des courts programmes \n",
+    "# Compétence: maîtriser les bases de  Python et notamment les règles de syntaxe\n",
+    "# Activité: traduire en langage Python les requêtes suivantes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "241264f1-5170-4c78-882f-a3a6f6562cef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Soit la liste de str L_depart des départements Pyrénées-Atlantiques, Landes, Gironde, Dordogne, Lot-et-Garonne, Gers\n",
+    "L_depart=['Pyrénées-Atlantiques', 'Landes', 'Gironde', 'Dordogne', 'Lot-et-Garonne', 'Gers']\n",
+    "# Soit la liste d'entiers L_popu du nombre d'habitants correspondant: 693027, 422976, 1654970, 413730, 331229, 192437.\n",
+    "L_popu = [693027, 422976, 1654970, 413730, 331229, 192437]\n",
+    "# Soit la liste d'entiers L_surface des superficies des départements correspondants en km²: 7644, 9242, 9975 , 9060, 5360, 6256\n",
+    "L_super = [7644, 9242, 9975 , 9060, 5360, 6256]\n",
+    "# Soit la liste de str L_code des codes INSEE des départements : 64, 40, 33, 24, 47, 32. \n",
+    "L_code = ['64', '40', '33', '24', '47', '32']\n",
+    "\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "750d3fe3-c6e5-40d2-b0fe-14ca64e3e9e8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Le département Landes a une superficie de 9242 km².\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Afficher dans la console en utilisant les listes ci-dessus: Le département Landes a une superficie de 9242 km².\n",
+    "print(\"Le département \" + L_depart[1] + \" a une superficie de \" + str(L_super[1]) + \" km².\")\n",
+    "# Résultat attendu:\n",
+    "# Le département Landes a une superficie de 9242 km².\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "f3c1ce76-408e-4c19-acb8-320c1b187021",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Pyrénées-Atlantiques 64\n",
+      "Landes 40\n",
+      "Gironde 33\n",
+      "Dordogne 24\n",
+      "Lot-et-Garonne 47\n",
+      "Gers 32\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "' Résultat attendu:\\nPyrénées-Atlantiques 64\\nLandes 40\\nGironde 33\\nDordogne 24\\nLot-et-Garonne 47\\nGers 32 \\n'"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Pour les n éléments de la liste L_depart, afficher le département suivi de son code INSEE séparé d'un espace.\n",
+    "for i in range(len(L_depart)):\n",
+    "    print(L_depart[i]+' '+L_code[i])\n",
+    "\"\"\" Résultat attendu:\n",
+    "Pyrénées-Atlantiques 64\n",
+    "Landes 40\n",
+    "Gironde 33\n",
+    "Dordogne 24\n",
+    "Lot-et-Garonne 47\n",
+    "Gers 32 \n",
+    "\"\"\"\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "4819da6d-23a1-4030-b37d-4404912f9240",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[90.66287284144427, 45.76671716078771, 165.91177944862156, 45.66556291390729, 61.7964552238806, 30.760390025575447]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la fonction densite() qui prend comme arguments la liste du nombre d'habitants et la liste des superficies,\n",
+    "# elle renvoie la liste des densités de population en nombre d'habitants au km².\n",
+    "def densite(pop:[int],sur:[int]):\n",
+    "    s=[]\n",
+    "    for i in range(len(pop)):\n",
+    "        s.append(pop[i]/sur[i])\n",
+    "    return s\n",
+    "\n",
+    "# Appeler cette fonction pour les 6 départements et afficher les densités de population\n",
+    "print(densite(L_popu,L_super))\n",
+    "# Résultat attendu:\n",
+    "# [90.66287284144427, 45.76671716078771, 165.91177944862156, 45.66556291390729, 61.7964552238806, 30.760390025575447]\n",
+    "\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "f7cd3297-caaf-4687-9bc4-59d6cecb1413",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Densité de population du département Gers : 30.8 hab/km²\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Rappel: le nombre de décimales d'un flottant arrondi peut être paramétré avec la fonction round(flottant,nbre décimales)\n",
+    "# En utilisant la fonction densite(), afficher sur une seule ligne: Densité de population du département Gers : 30.8 hab/km².\n",
+    "print('Densité de population du département '+L_depart[5]+' : ' + str(round(densite(L_popu,L_super)[5],1))+\" hab/km²\")\n",
+    "# Résultat attendu:\n",
+    "# Densité de population du départment Gers : 30.8 hab/km²\n",
+    "\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "cf2e6fb4-31c6-491c-91a8-6d191c998822",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "PyrénéesAtlantiques\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Mon application n'accepte pas les caractères spéciaux comme le trait d'union.\n",
+    "# Il faut donc convertir Pyrénées-Atlantiques en PyrénéesAtlantiques\n",
+    "# Méthode: on splitte avec le - et on concatène \n",
+    "# Soit la variable dep ='Pyrénées-Atlantiques', écrire le script qui traite cette variable.\n",
+    "dep ='Pyrénées-Atlantiques'\n",
+    "s=dep.split('-')\n",
+    "dep= s[0]+s[1]\n",
+    "print(dep)\n",
+    "\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "03bdb809-d114-4f08-8792-3baa32c44c13",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Gers\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Pour les 6 départements, si la population du département est inférieure à 400000 habitants et la superficie > 6000 km²,\n",
+    "# alors afficher le département\n",
+    "for i in range(6):\n",
+    "    if L_popu[i] < 400000 and L_super[i] > 6000:\n",
+    "        print(L_depart[i])\n",
+    "# Résultat attendu:\n",
+    "# Gers\n",
+    "\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "18472c40-7dc8-4a35-9a57-63ffc75e3423",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "-0.48865534417118595\n",
+      "-0.09873228399054386\n",
+      "0.03107881530139991\n",
+      "-0.14332236777206908\n",
+      "0.8347378388287083\n",
+      "0.2947507161496394\n",
+      "0.1313731241139952\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "' Résultat attendu:\\n-0.48865534417118595\\n-0.09873228399054386\\n0.03107881530139991\\n-0.14332236777206908\\n0.8347378388287083\\n0.2947507161496394\\n0.1313731241139952\\n'"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# On veut calculer la variation de la population du Gers tous les ans\n",
+    "# Les valeurs fournies par Wikipédia sont ( année: nbre habitants) :\n",
+    "# 1968:181577 1975:175366 1982:174154 1990:174587 1999:172335 2010:188159 2015:190932 2021:192437\n",
+    "# Soit la liste ( int ) des années L_annee contenant 1968  1975 ...\n",
+    "# Soit la liste ( int ) du nombre d'habitants L_habit contenant 181577 175366 ...  \n",
+    "L_annee = [1968,1975,1982,1990,1999,2010,2015,2021]\n",
+    "L_habit = [181577,175366,174154,174587,172335,188159,190932,192437]\n",
+    "# Ecrire le script qui affiche la variation de population par an en %. \n",
+    "for i in range(len(L_annee)-1):\n",
+    "    var = (L_habit[i+1] - L_habit[i]) / (L_annee[i+1] - L_annee[i])\n",
+    "    print(100*var / L_habit[i])\n",
+    "\"\"\" Résultat attendu:\n",
+    "-0.48865534417118595\n",
+    "-0.09873228399054386\n",
+    "0.03107881530139991\n",
+    "-0.14332236777206908\n",
+    "0.8347378388287083\n",
+    "0.2947507161496394\n",
+    "0.1313731241139952\n",
+    "\"\"\"\n",
+    "####"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
