@@ -22,7 +22,6 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 0;
     }
 
     header {
@@ -130,7 +129,7 @@
     try {
       const res = await fetch("tree.json");
       treeData = await res.json();
-      openPath("Général");
+      openPath(".");          // ← on arrive à la racine
     } catch (e) {
       document.getElementById("content").innerHTML = `<div class="empty">Erreur de chargement de tree.json</div>`;
     }
@@ -156,7 +155,6 @@
     }
     currentPath = path;
 
-    // Title + back button
     document.getElementById("title").textContent = node.name === "CDP-TSI1" ? "CDP TSI1" : node.name;
     document.getElementById("back").style.display = historyStack.length > 0 ? "block" : "none";
 
