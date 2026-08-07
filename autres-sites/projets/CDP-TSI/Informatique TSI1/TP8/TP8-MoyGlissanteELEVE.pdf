@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+
+def moyglissante(l:[float]):
+    # Calcule la moyenne glissante d'une liste de valeurs sur 3 éléments
+    # Sortie: liste des valeurs moyennées (float)
+    s=[None]
+    for i in range(len(l)-2):
+        s.append(sum(l[i:3+i])/3)
+    return s

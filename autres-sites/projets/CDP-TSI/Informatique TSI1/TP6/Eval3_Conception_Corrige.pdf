@@ -1,0 +1,245 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0427dcfd-292f-41c3-9a49-25eb9fb79338",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Objectif: concevoir et écrire des courts programmes \n",
+    "# Compétence: maîtriser les bases de la programmation en langage Python et notamment les règles de syntaxe\n",
+    "# Activité: traduire en langage Python les requêtes suivantes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "241264f1-5170-4c78-882f-a3a6f6562cef",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "BTS STMG\n",
+      "['BTS', 'BacPro']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la variable lycee contenant la chaîne de caractères Saint-Cricq.\n",
+    "lycee ='Saint-Cricq'\n",
+    "# Soit la variable nbre_lettres contenant le nombre de lettres de la variable lycee\n",
+    "nbre_lettres=len(lycee)\n",
+    "# Soit la variable classement_lycee contenant le résultat du calcul : 15,3 . 12 / 100\n",
+    "classement_lycee=15.3*12/100\n",
+    "# Soit la liste sections contenant STI2D, BTS, BacPro et BacG.\n",
+    "sections=['STI2D','BTS','BacPro','BacG']\n",
+    "# Ajouter à cette liste STMG\n",
+    "sections.append('STMG')\n",
+    "# Afficher le deuxième élément et le dernier de la liste sections sur une seule ligne\n",
+    "print(sections[1],sections[-1])\n",
+    "# Afficher la sous-liste [BTS,BacPro] en utilisant le slicing\n",
+    "print(sections[1:3])\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "750d3fe3-c6e5-40d2-b0fe-14ca64e3e9e8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "OK!\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Si la variable lycee vaut Saint-Cricq ou si la variable lycee vaut saint-cricq alors afficher OK! \n",
+    "# sinon afficher gRRRRRrrrr!\n",
+    "if lycee == 'Saint-Cricq' or lycee == 'saint-cricq':\n",
+    "    print('OK!')\n",
+    "else:\n",
+    "    print('gRRRRRrrrr!')\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "f3c1ce76-408e-4c19-acb8-320c1b187021",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "39\n",
+      "67\n",
+      "103\n",
+      "147\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Pour i entre 6 et 12 compris par pas de 2 afficher i² + 3\n",
+    "for i in range(6,13,2):\n",
+    "    print(i**2 + 3 )\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "4819da6d-23a1-4030-b37d-4404912f9240",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Il vous faudra: farine\n",
+      "Il vous faudra: sucre\n",
+      "Il vous faudra: miel\n",
+      "Il vous faudra: eau\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Pour ingredient appartient à farine, sucre, miel, eau,  afficher 4 fois le texte <Il vous faudra:> et l'ingrédient listé\n",
+    "for ingredient in ['farine', 'sucre', 'miel', 'eau']:\n",
+    "    print('Il vous faudra:',ingredient)\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "f7cd3297-caaf-4687-9bc4-59d6cecb1413",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.0 4\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit xA=2.0\n",
+    "xA=2.0\n",
+    "# Soit la fonction f(x) qui renvoie x² -2x +1\n",
+    "def f(x):\n",
+    "    return x**2 - 2*x +1\n",
+    "# Afficher le résultat de f(xA) et de f(3) sur une même ligne\n",
+    "print(f(xA),f(3))\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "cf2e6fb4-31c6-491c-91a8-6d191c998822",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Soit la fonction g(x) qui prend x et y comme arguments renvoie x² + y + 1 et 3y + 2x + 2 \n",
+    "def g(x,y):\n",
+    "    return x**2 + y + 1 , 3*y + 2*x +2\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "03bdb809-d114-4f08-8792-3baa32c44c13",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Soit la fonction escargot() qui prend comme arguments le temps t en heure et la distance d en mètres\n",
+    "# et qui renvoie la vitesse linéaire en mm/s d'un escargot\n",
+    "def escargot(t:float,d:float):\n",
+    "    return 1000*d/3600/t\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "18472c40-7dc8-4a35-9a57-63ffc75e3423",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.2777777777777778\n",
+      "0.23809523809523808\n",
+      "0.2192982456140351\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la liste des temps en minutes lst_temps pour plusieurs escargots qui ont parcouru 50m en 300,350,380 minutes\n",
+    "lst_temps = [300,350,380 ]\n",
+    "# En utilisant la fonction précédente escargot() et une boucle for ... afficher les vitesses en cm/s de ces 3 escargots.\n",
+    "for t in lst_temps:\n",
+    "    print(escargot(t/60, 50 )/10 )\n",
+    "####"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "abc53658-8512-49c7-8eac-b03af141ab2e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "spouill\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la liste des noms des 3 escargots: speedy, pépouze, chill:\n",
+    "noms = ['speedy', 'pépouze', 'chill' ]\n",
+    "# Afficher un mot de passe constitué des deux premières lettres du premier attachées au 4° et 5° du deuxième\n",
+    "# attachées aux trois dernières du dernier en utilisant le slicing ( of course d'es... )\n",
+    "escargot1= noms[0]\n",
+    "escargot2= noms[1]\n",
+    "escargot3= noms[2]\n",
+    "print(escargot1[:2] + escargot2[3:5] + escargot3[-3:])\n",
+    "####"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

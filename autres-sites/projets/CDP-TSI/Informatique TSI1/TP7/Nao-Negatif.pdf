@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+"""
+Négatif du robot Nao Source Nao.pgm cible NaoNegatif.pgm
+"""
+def lecturepgm(nomfichier:str):
+    # Objectif: Ouvre un fichier pgm en mode lecture
+    # Entrée: fichier pgm ( str)
+    # Sortie liste de pixels (int)
+    pixels=[]
+    source = open(nomfichier,'r')
+    for i in range(4):
+        source.readline()
+    for data in source:
+        pixels.append(int(data))
+    source.close()
+    return pixels
+    
+def negatif(liste_entree:[]):
+    # Objectif: modifie les pixels d'une image pgm
+    # Entrée: liste_entree (liste d'entiers)
+    # Sortie: liste_sortie (liste d'entiers)    
+    liste_sortie=[]
+    for i in range (len(liste_entree)):
+        liste_sortie.append(255-liste_entree[i])
+    return liste_sortie
+   
+def ecriturepgm(nomfichier:str,pixels:[int]):
+    # Objectif: Ouvre un fichier pgm en mode écriture
+    # Entrée: fichier pgm (objet)
+    # Entrée liste de pixels (int)
+    cible = open(nomfichier,'w')
+    cible.write("P2#"+"\n"+"600 1021"+"\n"+"255"+"\n")
+    for i in range (len(pixels)):
+        cible.write(str(pixels[i])+"\n")
+    cible.close()
+    return None
+
+test=lecturepgm("Nao.pgm")
+result=negatif(test)
+ecriturepgm("NaoNegatif.pgm",result)
+

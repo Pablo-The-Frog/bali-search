@@ -1,0 +1,76 @@
+# -*- coding: utf-8 -*-
+"""
+Différents traitements d'image sur Nao.pgm
+"""
+def lecturepgm(nomfichier:str):
+    # Objectif: Ouvre un fichier pgm en mode lecture
+    # Entrée: fichier pgm ( objet)
+    # Sortie liste de pixels (int)
+    pixels=[]
+    source = open(nomfichier,'r')
+    for i in range(4):
+        source.readline()
+    for data in source:
+        pixels.append(int(data))
+    source.close()
+    return pixels
+    
+def negatif(liste_entree:[int]):
+    # Objectif: modifie les pixels d'une image pgm
+    # Entrée: liste_entree (liste d'entiers)
+    # Sortie: liste_sortie (liste d'entiers)    
+    liste_sortie=[]
+    for i in range (len(liste_entree)):
+        liste_sortie.append(255-liste_entree[i])
+    return liste_sortie
+
+def eclaircir(liste_entree:[int]):
+    # Objectif: éclaircit les pixels d'une image pgm
+    # Entrée: liste_entree (liste d'entiers)
+    # Sortie: liste_sortie (liste d'entiers)    
+    liste_sortie=[]
+    for i in range (len(liste_entree)):
+        liste_sortie.append(128+0.5*liste_entree[i])
+    return liste_sortie
+
+def flouter(liste_entree:[int]):
+    # Objectif: floute les pixels d'une image pgm
+    # Entrée: liste_entree (liste d'entiers)
+    # Sortie: liste_sortie (liste d'entiers)    
+    liste_sortie=[]
+    # les 9 premiers pixels sont inchangés
+    for i in range (9):
+        liste_sortie.append(liste_entree[i])
+    for i in range (10,len(liste_entree)):
+        liste_sortie.append(sum(liste_entree[i-10:i])/10)
+    return liste_sortie
+
+def contour(liste_entree:[int]):
+    # Objectif: détecte les contours d'une image pgm
+    # Entrée: liste_entree (liste d'entiers)
+    # Sortie: liste_sortie (liste d'entiers)    
+    liste_sortie=[]
+    for i in range (len(liste_entree)-2):
+        if abs(liste_entree[i+1]-liste_entree[i])>20:
+            liste_sortie.append(0)
+        else:
+            liste_sortie.append(255)
+    return liste_sortie
+
+def ecriturepgm(nomfichier:str,pixels:[int]):
+    # Objectif: Ouvre un fichier pgm en mode écriture
+    # Entrée: fichier pgm (str)
+    # Entrée liste de pixels (int)
+    cible = open(nomfichier,'w')
+    cible.write("P2#"+"\n"+"600 1021"+"\n"+"255"+"\n")
+    for i in range (len(pixels)):
+        cible.write(str(pixels[i])+"\n")
+    cible.close()
+    return None
+
+test=lecturepgm("Nao.pgm")
+#result=negatif(test)
+#ecriturepgm("NaoNegatif.pgm",result)
+#ecriturepgm("NaoPlusclair.pgm",eclaircir(test))
+#ecriturepgm("NaoFlouté.pgm",flouter(test))
+ecriturepgm("NaoContour.pgm",contour(test))

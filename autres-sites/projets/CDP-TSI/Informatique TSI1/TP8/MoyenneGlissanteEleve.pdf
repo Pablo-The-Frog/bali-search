@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+
+def moyglissante(l:list,n:int):
+    # Calcule la moyenne glissante d'une liste de valeurs
+    # Entrée: liste des valeurs (float)
+    # Entrée: nombre entier d'éléments à moyenner
+    # Sortie: liste des valeurs moyennées (float)
+    s=[]
+    for i in range(n-1):
+        s.append(l[i])
+    for i in range(len(l)-(n-1)):
+        s.append(sum(l[i:n+i])/n)
+    return s

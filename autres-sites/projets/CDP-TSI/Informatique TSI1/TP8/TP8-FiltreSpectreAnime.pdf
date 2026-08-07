@@ -1,0 +1,82 @@
+# -*- coding: utf-8 -*-
+"""
+Signal informatif 0.1V 1kHz + Parasite 50mV 25kHz
+Filtrage passe-bas Ordre 1 fc = 5kHz
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.fft import fft, fftfreq
+import matplotlib.animation as animation
+from matplotlib.widgets import Slider
+
+Fs=1000 # Fréquence signal sinus 1kHz
+Fp=25000 # Fréquence parasite sinus 25kHz
+As=0.1 # Amplitude signal sinus 100mV
+Ap=50E-3  # Amplitude parasite 5mV
+tmax=5E-3 # 5ms soit 5 périodes
+n=5000 # 5000 points de calcul
+Te=tmax/n # période d'échantillonnage
+initial_freq=5000 # Fréquence de coupure passe-bas
+To=1/(2*np.pi*initial_freq)
+
+
+"Signal parasité en fonction du temps"
+t=np.linspace(0,tmax,n) # liste de valeurs de temps en s
+signal=As*np.sin(2*np.pi*Fs*t)+Ap*np.sin(2*np.pi*Fp*t)
+
+"Calcul du signal filtré"
+filtre1=np.array([0.0])
+for i in range(n-1):
+    filtre1=np.append(filtre1,(Te/(To+Te))*signal[i+1]+(To/(To+Te))*filtre1[i])
+
+plt.subplot(3,1,1)
+plt.plot(t,As*np.sin(2*np.pi*Fs*t),color='b',linewidth='2')
+s,=plt.plot(t,signal,color='r',linewidth='2')
+sf,=plt.plot(t,filtre1,color='black',linewidth='2')
+plt.grid()
+plt.xlabel("Temps(s)")
+plt.ylabel("Signal entrée / sortie (V)")
+plt.title("Réponse d'un filtre passe-bas d'ordre1 pour une entrée sinus 100mV/1kHz + 50mV/25kHz")
+
+Xs = fft(signal)  
+freq = fftfreq(signal.size, d=Te)  
+plt.subplot(3,1,2)
+fftin,=plt.plot(freq[:n//2], np.abs(Xs[:n//2])*2.0/n,color='r',linewidth='2')
+plt.xlim(100, 100E3) 
+plt.semilogx()
+plt.grid() 
+plt.xlabel("Fréquence (Hz)")
+plt.ylabel("Spectre signal parasité (V)")
+
+
+Xf = fft(filtre1)  
+freq = fftfreq(signal.size, d=Te)  
+plt.subplot(3,1,3)
+fftout,=plt.plot(freq[:n//2], np.abs(Xf[:n//2])*2.0/n,color='black',linewidth='2')
+plt.xlim(100, 100E3)
+plt.semilogx()  
+plt.grid()
+plt.xlabel("Fréquence (Hz)")
+plt.ylabel("Spectre signal filtré (V)")
+
+# Slider
+ax = plt.axes([0.25, .03, 0.50, 0.02])
+f = Slider(ax, 'Fréquence de coupure Fc(Hz)', 1000, 25000, valinit=initial_freq)
+
+def update(val):
+    # amp is the current value of the slider
+    newfreq = f.val
+    To=1/(2*np.pi*newfreq)
+    filtre1=np.array([0.0])
+    for i in range(n-1):
+        filtre1=np.append(filtre1,(Te/(To+Te))*signal[i+1]+(To/(To+Te))*filtre1[i])
+    Xf = fft(filtre1)  
+    freq = fftfreq(signal.size, d=Te)
+    # update curve
+    sf.set_ydata(filtre1)
+    fftout.set_ydata(np.abs(Xf[:n//2])*2.0/n)
+    # redraw canvas while idle
+    fig.canvas.draw_idle()
+
+# call update function on slider value change
+f.on_changed(update)

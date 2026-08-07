@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+import matplotlib.pyplot as plt
+"""Méthode des trapèzes,intégrale de f sur intervalle [a,b] sur n points"""
+
+def trapezes(f,a:float,b:float,n:int):
+	# Estimation de l'intégrale de la fonction f sur l'intervalle [a,b] sur n points
+    # Entrées: f:fonction a:float,b:float,n:int
+    # Sortie: s (float)
+    s = 0.0
+    h = (b-a)/n
+    for i in range(n):
+        x = a + i * h
+        s = s + h*((f(x)+f(x+h))/2)
+    return s
+
+def mafonction(x:float):
+    return 3*x+2
+
+def trapezesliste(p:[float],Te:float):
+    # Intègre la liste p en fonction de l'intervalle de temps Te
+    # Entrées: p:liste des puissances en Watt, Te: intervalle de temps en seconde
+    # Sortie s:énergie en Ws
+    s=0.0
+    for i in range(len(p)-1):
+        s=s+Te*(p[i+1]+p[i])/2
+    return s
+
+
+# P=[650,642,586,520,587,687,635,610,698,524]
+# plt.plot(P)
+# plt.ylabel("Puissance (W)")
