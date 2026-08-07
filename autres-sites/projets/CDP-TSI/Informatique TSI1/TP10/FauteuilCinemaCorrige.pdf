@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+"""Résolution équation de fermeture géométrique"""
+import matplotlib.pyplot as plt
+from numpy import sin,cos,pi,linspace
+
+a=60;b=430;d=115;e=35;l=490
+
+def f(teta:float): # teta en °
+    # Renvoie f(teta): float connaissant tetar
+    teta=teta*pi/180 
+    res=cos(teta)*(-2*a*d+2*e*d*cos(tetar))+sin(teta)*(-2*b*d+2*e*d*sin(tetar))-(l**2 -(a**2+b**2+e**2+d**2)+ 2*a*e*cos(tetar)+2*b*e*sin(tetar))
+    return res
+
+def dichotomie(f,a:float,b:float,epsilon:float):
+    assert f(a)*f(b)<0  
+    pente= f(b)>f(a)
+    while (b-a)>epsilon:
+        y0= f((b+a)/2)
+        if (y0>0 and pente == True) or (y0<0 and pente == False):
+            b=(b+a)/2 
+        else:
+            a=(b+a)/2
+    return (a+b)/2
+
+X_tetar=linspace(-90.0, 90.0, 180) 
+Y_tetad=[] 
+for x in X_tetar:
+    tetar=x*pi/180    
+    Y_tetad.append(dichotomie(f, -90, 90, 1E-6))    
+
+plt.plot(X_tetar, Y_tetad)
+plt.xlabel("Angle teta moteur (°)")
+plt.ylabel("Angle teta dosseret (°)")
+plt.grid()
+plt.xlim(-90,+90)
+plt.show()

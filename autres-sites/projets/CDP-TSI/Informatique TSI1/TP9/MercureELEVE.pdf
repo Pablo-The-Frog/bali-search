@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+""" Traitement d'images"""
+from PIL import Image
+import webbrowser
+import numpy as np
+
+img = Image.open("Horizon-Mercure.jpg")
+webbrowser.open('Horizon-Mercure.jpg')  # Ouverture image dans l'explorateur
+print(img.size)  # Lignes Colonnes
+
+# Eclaircissement par ajout de 50 au pixel si < 200
+im=np.array(img)  # Conversion en tableau ( array )
+mer=np.zeros([img.height,img.width],dtype=np.uint8)  # Création d'un tableau vide
+for i in range(img.height):  # Pour toutes les lignes
+    for j in range(img.width):  # Pour toutes les colonnes
+        if im[i,j]<200:
+            mer[i,j]=im[i,j]+50 
+        else:
+            mer[i,j]=im[i,j]
+            
+mercure1 = Image.fromarray(mer)   # Conversion array image
+mercure1.save("mercure1.jpg")   # Sauvegarde du fichier
+webbrowser.open('mercure1.jpg')      

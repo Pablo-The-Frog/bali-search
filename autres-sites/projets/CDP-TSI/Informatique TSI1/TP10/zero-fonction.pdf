@@ -1,0 +1,55 @@
+# -*- coding: utf-8 -*-
+from numpy import sqrt
+print("\nRecherche solution f(x)=0 avec précision sur x0 sur [a,b]\n")
+
+def dichotomie(f,a:float,b:float,epsilon:float):
+    # Renvoie un encadrement de x0 tel que f(x0)= 0
+    # Entrées: f est une fonction au sens mathématique
+    # a et b sont les bornes inférieure et supérieure
+    # epsilon est la précision sur la valeur de x0
+    # Renvoie une erreur si l'encadrement est mal choisi
+    # Pour fonction croissante ou décroissante
+    assert f(a)*f(b)<0  
+    pente= f(b)>f(a)
+    while (b-a)>epsilon:
+        y0= f((b+a)/2)
+        if (y0>0 and pente == True) or (y0<0 and pente == False):
+            b=(b+a)/2 
+        else:
+            a=(b+a)/2
+    return a,b
+
+def f(x):
+    return x**2-2
+
+result=dichotomie(f,1.0,2.0,1e-6)
+print("Résultat de l'encadrement de x0: ",result)
+print("Estimation du résultat de f(x0)=0: x0 vaut",(result[0]+result[1])/2, "à E-6 près")
+print("Valeur exacte: ",sqrt(2))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

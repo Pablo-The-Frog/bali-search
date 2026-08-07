@@ -1,0 +1,592 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "0427dcfd-292f-41c3-9a49-25eb9fb79338",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Objectif: concevoir et écrire des courts programmes \n",
+    "# Compétence: maîtriser les bases de la programmation en langage Python et notamment les règles de syntaxe\n",
+    "# Activité: traduire en langage Python les codes suivants écrits en pseudocode."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "241264f1-5170-4c78-882f-a3a6f6562cef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Soit la variable prenom contenant mon prénom en minuscules sans accents.\n",
+    "prenom=\"eric\"\n",
+    "# Soit la variable age contenant mon âge en valeur entière\n",
+    "age=25\n",
+    "# Soit le taux de TVA de 5.5% dans la variable taux de type float\n",
+    "taux=5.5\n",
+    "# Soit la liste de mes matières en TSI dans la variable matieres.\n",
+    "matieres=[\"SI\",\"maths\",\"physique\",\"francais\",\"anglais\",\"informatique\"]\n",
+    "# Soit le tuple mespots listant mes 5 meilleurs potes de prépa avec leurs prénoms sans accent ni majuscule\n",
+    "mespots=(\"moi\",\"toi\",\"eux\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "5de5dddb-4f71-4943-bf24-24a20d915ce2",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Saisir ton age:  25\n",
+      "Saisir ton prénom:  fqsf\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Presque!\n",
+      "Age ok!\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Saisir un âge puis un prénom avec l'instruction input()\n",
+    "monage=int(input(\"Saisir ton age: \"))\n",
+    "monprenom=input(\"Saisir ton prénom: \")\n",
+    "# Si l'âge saisi est supérieur à mon âge réel alors afficher Oups! dans la console Fin du Si\n",
+    "if monage>age:\n",
+    "    print(\"Oups!\")\n",
+    "# Si l'âge saisi est égal à mon âge mais mon prénom différent, alors afficher Presque!  Fin du Si\n",
+    "if monage==age and monprenom!=prenom:\n",
+    "    print(\"Presque!\")\n",
+    "# Si l'âge saisi et le prénom sont corrects alors afficher Gagné!\n",
+    "if monage==age and monprenom==prenom:\n",
+    "    print(\"Gagné!\")\n",
+    "# Sinon Si seul le prénom est correct alors afficher Prénom ok!\n",
+    "elif monage!=age and monprenom==prenom:\n",
+    "    print(\"Prénom ok!\")\n",
+    "# Sinon Si seul l'âge est correct alors afficher Age ok!\n",
+    "elif monage==age and monprenom!=prenom:\n",
+    "    print(\"Age ok!\")    \n",
+    "# Sinon afficher Rejouer!\n",
+    "else: print(\"Rejouer!\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "750d3fe3-c6e5-40d2-b0fe-14ca64e3e9e8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "er\n",
+      "ic\n",
+      "eric\n",
+      "ri\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Afficher les deux premières lettres de mon prénom\n",
+    "print(prenom[:2])\n",
+    "# Afficher les deux dernières lettres de mon prénom\n",
+    "print(prenom[-2:])\n",
+    "# Afficher les deux premières lettres de mon prénom suivies des deux dernières lettres de mon prénom\n",
+    "print(prenom[:2]+prenom[-2:])\n",
+    "# Afficher mon prénom sans la première et dernière lettre\n",
+    "print(prenom[1:-1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "ccf9ab40-836c-40d5-9c21-7d586654ef26",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Saisir prix article 100\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Prix HT:  100 Taux TVA:  5.5 Prix TTC:  105.5\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Saisir le prix d'un article Hors Taxe\n",
+    "article=int(input(\"Saisir prix article\"))\n",
+    "# Afficher le prix HT, le taux de TVA, le prix TTC\n",
+    "print(\"Prix HT: \" ,article, \"Taux TVA: \",taux,\"Prix TTC: \" ,article+article*taux/100)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "f3c1ce76-408e-4c19-acb8-320c1b187021",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Saisir prix article 100\n",
+      "Saisir montant remise 5.5\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Prix sans remise 100.0 Taux de remise 5.5 Prix avec remise 94.5 Gain 5.5\n",
+      "Prix sans remise 100.0 Taux de remise 5.5 Prix avec remise 94.5 Gain 5.5\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Saisir le prix d'un article puis le montant de la remise\n",
+    "article=float(input(\"Saisir prix article\"))\n",
+    "remise=float(input(\"Saisir montant remise\"))\n",
+    "# Afficher le prix sans la remise, le taux de remise, le prix avec la remise, le gain\n",
+    "print(\"Prix sans remise\",article,\"Taux de remise\",100*remise/article,\"Prix avec remise\", article -remise, \"Gain\", remise)\n",
+    "# Idem mais avec des réels formatés sur une décimale\n",
+    "print(\"Prix sans remise\",round(article,2),\"Taux de remise\",round(100*remise/article,2),\"Prix avec remise\", round(article -remise,2), \"Gain\", round(remise,2))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "4819da6d-23a1-4030-b37d-4404912f9240",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Nbre livres achetés 5\n",
+      "Nbre livres achetés 5 Nbre sucettes achetées 6.0 Monnaie 1.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la variable budget=100 ( euros)\n",
+    "budget=100\n",
+    "# Soit le prix d'un article livre=18 ( euros)\n",
+    "livre=18\n",
+    "# Afficher le nombre entier de livres que je peux acheter avec mon budget\n",
+    "print(\"Nbre livres achetés\",budget//livre)\n",
+    "# Soit le prix d'un second article en bout de gondole sucette=1.50 ( euros)\n",
+    "sucette=1.50\n",
+    "# Afficher le nombre entier de livres et de sucettes et la monnaie qu'il me reste \n",
+    "nbre_livres=budget//livre\n",
+    "nbre_sucettes=(budget%livre)//sucette\n",
+    "monnaie=budget-nbre_livres*livre -nbre_sucettes*sucette\n",
+    "print(\"Nbre livres achetés\", nbre_livres,\"Nbre sucettes achetées\", nbre_sucettes,\"Monnaie\",monnaie)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "f7cd3297-caaf-4687-9bc4-59d6cecb1413",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Monnaie  2.5 Nbre livre/sucette achetés 5\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soient les deux articles précédents et le même budget\n",
+    "# Tant que mon budget me le permet Faire acheter un livre et une sucette Fin Tant que\n",
+    "monnaie=budget\n",
+    "cpt=0\n",
+    "while(monnaie >livre +sucette):\n",
+    "    cpt=cpt+1\n",
+    "    monnaie=monnaie-livre-sucette\n",
+    "print(\"Monnaie \",monnaie,\"Nbre livre/sucette achetés\",cpt) \n",
+    "# Afficher la monnaie restante et le nombre de livres/sucettes achetés"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "cf2e6fb4-31c6-491c-91a8-6d191c998822",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Suivant\n",
+      "Suivant\n",
+      "Index dernière lettre < 'g': 1\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit mon prénom dans la variable prenom\n",
+    "prenom=\"bastien\"\n",
+    "# Tant que la lettre de mon prénom est inférieure à la lettre \"g\" Alors afficher 'Suivant'\n",
+    "# Fin du Tant que\n",
+    "i=0\n",
+    "while prenom[i]<'g':\n",
+    "    print(\"Suivant\")\n",
+    "    i=i+1\n",
+    "print(\"Index dernière lettre < 'g':\",i-1)\n",
+    "# Afficher l'index de la dernière lettre inférieure à 'g'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "03bdb809-d114-4f08-8792-3baa32c44c13",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Nbre matières 6\n",
+      "['SI', 'maths', 'physique', 'francais', 'anglais', 'informatique', 'sport']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la liste de mes matières en TSI dans la variable matieres.\n",
+    "# Soit le tuple mespotes listant mes 5 meilleurs potes de prépa avec leurs prénoms sans accent ni majuscule\n",
+    "# Afficher le nombre de matières en TSI\n",
+    "print(\"Nbre matières\", len(matieres))\n",
+    "# Ajouter à la liste des matières le sport\n",
+    "matieres.append(\"sport\")\n",
+    "print(matieres)\n",
+    "# Ajouter à la liste des potes M. VERGNE\n",
+    "#mespots.append(\"M VERGNE\") renvoie ereur car tuple non modifiable"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "18472c40-7dc8-4a35-9a57-63ffc75e3423",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['SI'], ['maths'], ['physique'], ['francais'], ['anglais'], ['informatique'], ['sport']]\n",
+      "[['S', 'I'], ['m', 'a', 't', 'h', 's'], ['p', 'h', 'y', 's', 'i', 'q', 'u', 'e'], ['f', 'r', 'a', 'n', 'c', 'a', 'i', 's'], ['a', 'n', 'g', 'l', 'a', 'i', 's'], ['i', 'n', 'f', 'o', 'r', 'm', 'a', 't', 'i', 'q', 'u', 'e'], ['s', 'p', 'o', 'r', 't']]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la liste de mes matières en TSI dans la variable matieres.\n",
+    "# Créer une liste qui contient les matières splittées avec le caractère vide '' en utilisant la fonction split()\n",
+    "matieres_splittees=[]\n",
+    "for e in matieres:\n",
+    "    matieres_splittees.append(e.split(None))# Ne fonctionne pas\n",
+    "print(matieres_splittees)\n",
+    "# Créer une liste qui contient les matières splittées avec le caractère vide '' en utilisant la fonction list()\n",
+    "matieres_splittees=[]\n",
+    "for e in matieres:\n",
+    "    matieres_splittees.append(list(e))\n",
+    "print(matieres_splittees)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "ab004aa1-db13-465b-8f5c-31f0a7f3f6af",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "5.0\n",
+      "26\n",
+      "101\n",
+      "226\n",
+      "401\n",
+      "5\n",
+      "10\n",
+      "26\n",
+      "65\n",
+      "82\n",
+      "101\n",
+      "6.289999999999999\n",
+      "7.25\n",
+      "8.290000000000001\n",
+      "9.410000000000002\n",
+      "10.610000000000003\n",
+      "11.890000000000004\n",
+      "13.250000000000007\n",
+      "14.690000000000008\n",
+      "16.210000000000008\n",
+      "17.810000000000013\n",
+      "19.490000000000013\n",
+      "21.250000000000018\n",
+      "23.090000000000018\n",
+      "25.01000000000002\n",
+      "27.010000000000023\n",
+      "29.090000000000025\n",
+      "31.25000000000003\n",
+      "33.49000000000003\n",
+      "35.81000000000004\n",
+      "38.210000000000036\n",
+      "40.69000000000004\n",
+      "43.25000000000004\n",
+      "45.89000000000005\n",
+      "48.610000000000056\n",
+      "51.41000000000006\n",
+      "54.29000000000006\n",
+      "57.250000000000064\n",
+      "60.29000000000007\n",
+      "63.410000000000075\n",
+      "66.61000000000008\n",
+      "69.89000000000007\n",
+      "73.25000000000009\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit xA=2.0\n",
+    "xA=2.0\n",
+    "# Soit la fonction f(x) qui renvoie y=x²+1\n",
+    "def f(x:float):\n",
+    "    return x**2+1\n",
+    "# Afficher le résultat de f(xA)\n",
+    "print(f(xA))\n",
+    "# Pour i compris entre 5 et 20 par pas de 5 afficher f(i)\n",
+    "for i in range(5,21,5):\n",
+    "    print(f(i))\n",
+    "# Pour j appartient à 2,3,5,8,9,10 afficher f(j)\n",
+    "for j in [2,3,5,8,9,10]:\n",
+    "    print(f(j))\n",
+    "# Pour k compris entre 2.3 et 8.6 par pas de 0.2 afficher f(k) avec la fonction linspace() de numpy\n",
+    "from numpy import linspace,arange # il faut utiliser arange\n",
+    "k=arange(2.3,8.6,0.2)\n",
+    "for r in k:\n",
+    "    print(f(r))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "048b46e1-5591-4ab8-b6bd-b687f8082f00",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Hypoténuse 5.0\n",
+      "Angle1 0.9272952180016123 Angle2 0.6435011087932843\n",
+      "Aire du triangle:  6.0\n",
+      "Pente toit en %:  133.33333333333334\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit le triangle rectangle de base a=3 (mètres) et de hauteur b=4 (mètres)\n",
+    "a,b=3,4\n",
+    "# Soient les fonctions mathématiques suivantes: https://docs.python.org/3/library/math.html\n",
+    "# Calculer l'hypoténuse du triangle\n",
+    "from math import sqrt,acos\n",
+    "print(\"Hypoténuse\", sqrt(a**2+b**2))\n",
+    "# Calculer les deux angles en radian opposés à l'angle droit\n",
+    "angle1=acos(a/sqrt(a**2+b**2))\n",
+    "angle2=acos(b/sqrt(a**2+b**2))\n",
+    "print(\"Angle1\",angle1,\"Angle2\",angle2)\n",
+    "# Calculer l'aire du triangle\n",
+    "print(\"Aire du triangle: \", a*b/2)\n",
+    "# Calculer le pourcentage de pente dans le cas d'un toit\n",
+    "print(\"Pente toit en %: \", 100*4/3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "64904438-a4bb-4cf3-a0a5-ebeb926a33ca",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "4.605170185988092 2.0\n",
+      "10.0\n",
+      "2 3\n",
+      "-3 -3\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit x=100, calculer le log népérien, le log décimal\n",
+    "from math import log,log10,log2,floor\n",
+    "x=100\n",
+    "print(log(x),log10(x))\n",
+    "# Soit x=1024 calculer le log entier de x.\n",
+    "x=1024\n",
+    "print(log2(x))\n",
+    "# Soit a=2.6 afficher l'entier inférieur et l'arrondi\n",
+    "a=2.6\n",
+    "print(floor(a),round(a))\n",
+    "# Soit a=-2.6 afficher l'entier inférieur et l'arrondi\n",
+    "a=-2.6\n",
+    "print(floor(a),round(a))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "0b0bd6fa-2e20-400e-af4b-3c8cdd0f051e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " Distance en km entre lycée et tour Eiffel: 650.6410228863149\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soient les coordonnées GPS en degrés décimaux du lycée et de la tour Eiffel prises sur Internet\n",
+    "from math import radians,acos,sin,cos,degrees\n",
+    "eiffel_gps=[48.85847595237671, 2.2947924335053904]\n",
+    "lycee_gps=[43.2991480983246, -0.3594976017437198]\n",
+    "phiA=radians(eiffel_gps[0])\n",
+    "phiB=radians(lycee_gps[0])\n",
+    "lambdaA=radians(eiffel_gps[1])\n",
+    "lambdaB=radians(lycee_gps[1])\n",
+    "# Soit la distance à vol d'oiseau définie dans cet article: https://fr.wikipedia.org/wiki/Orthodromie\n",
+    "# Calculer la distance à vol de piaf entre ces deux sites remarquables\n",
+    "vol_piaf=1.852*60*degrees(acos(sin(phiA)*sin(phiB)+cos(phiA)*cos(phiB)*cos(lambdaB-lambdaA)))\n",
+    "print(\" Distance en km entre lycée et tour Eiffel:\",vol_piaf) # A vérifier sur Google maps"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "61cf3b58-6328-4387-945d-748677bb61e3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "650.6410228863149\n",
+      "12906.954079014853\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Définir et tester une fonction nommée voldepiaf() qui prend comme arguments les latitudes et longitudes de deux points GPS en degrés\n",
+    "# et qui renvoie la distance parcourue en km. \n",
+    "def voldepiaf(phiA:float,phiB:float,lambdaA:float,lambdaB:float):\n",
+    "    return 1.852*60*degrees(acos(sin(phiA)*sin(phiB)+cos(phiA)*cos(phiB)*cos(lambdaB-lambdaA)))\n",
+    "# Calculer la distance entre le cap Horn et le port d'arrivée du Vendée Globe. Vérifier sur Internet.12918km\n",
+    "print(voldepiaf(radians(43.2991480983246),radians(48.85847595237671),radians(-0.3594976017437198),radians(2.2947924335053904)))\n",
+    "print(voldepiaf(radians(46.49028977244845),radians(-55.96327576812558),radians(-1.795159850976713),radians(-67.22547374991603)))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "a800b0a3-fdd3-48ee-92d2-e4548f010b57",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Jour de janvier: 23    Heure UTC: 10h30   Température en degrés Celcius: 10   Pression en hPa: 1019\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit la définition d'une trame METAR utilisée en aéronautique: https://fr.wikipedia.org/wiki/METAR\n",
+    "# Soit la trame émise par la station météo de l'aéroport de Pau Uzein (LFBP) : https://fr.allmetsat.com/metar-taf/france.php?icao=LFBP\n",
+    "tramePau=\"LFBP 231030Z AUTO 21003KT 9999 FEW009 OVC058 10/08 Q1019 NOSIG\"\n",
+    "# Déchiffrer cette trame en affichant le jour et l'heure, la température en degrés et la pression en hPa.\n",
+    "champs=tramePau.split(\" \")\n",
+    "jour= champs[1][:2]\n",
+    "heure=champs[1][2:4]+'h'+champs[1][4:6]\n",
+    "temp=champs[7][:2]\n",
+    "pression=champs[8][1:]\n",
+    "print(\"Jour de janvier: \"+jour+\"    Heure UTC: \"+heure+\"   Température en degrés Celcius: \"+temp+\"   Pression en hPa: \"+pression)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "fa4d932f-a115-4a13-95ec-985a76099674",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Entête du tableau csv: \n",
+      " ['\\ufeffAnnee;Nom INSEE région;Code INSEE région;Production hydraulique renouvelable (GWh);Production bioénergies renouvelable (GWh);Production éolienne renouvelable (GWh);Production solaire renouvelable (GWh);Production électrique renouvelable (GWh);Production gaz renouvelable (GWh);Production totale renouvelable (GWh);Géo-shape région;Géo-point région'] \n",
+      "\n",
+      "Extrait de la deuxième ligne :\n",
+      " ['2009;Centre-Val de Loire;24;96.0;83.7;961.0;1.5;1142.2;0.0;1142.2;\"{\"\"coordinates\"\": [[[2.936623684', ' 48.163455797]', ' [2.963697564', ' 48.153076138]', ' [3.011765963', ' 48.144980029]', ' [3.029309619', ' 48.13332059]', ' [3.032329185', ' 48.11423063]']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Soit le fichier csv en libre accès sur le site: \n",
+    "# https://www.data.gouv.fr/fr/datasets/production-regionale-annuelle-des-energies-renouvelables-2008-a-2021/\n",
+    "# spécifiant la production régionale annuelle d'énergies renouvelables\n",
+    "# Soit le module Python spécialisé dans les fichiers csv: https://docs.python.org/fr/3/library/csv.html\n",
+    "# Ouvrir et lire le fichier sauvegardé dans un tableau\n",
+    "import csv\n",
+    "with open('prod-region-annuelle-enr.csv', encoding='UTF-8') as f:\n",
+    "    tableau=[]\n",
+    "    reader = csv.reader(f)\n",
+    "    for row in reader:\n",
+    "        tableau.append(row)\n",
+    "print(\"Entête du tableau csv: \\n\",tableau[0],'\\n')\n",
+    "print(\"Extrait de la deuxième ligne :\\n\",tableau[1][:10])\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

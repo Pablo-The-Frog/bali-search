@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+""" Recherche dasn une liste triée """
+
+"Déclaration de la fonction recherche par dichotomie"
+def dicho_liste_triée(x:int,tab:[float]):
+    # renvoie l'indice de l'élément de la liste tab qui vaut x, méthode par dichotomie
+    g,d= 0,len(tab)-1
+    while g<d-1:
+        m=(d+g)//2
+        print("g=",g,"d=",d,"m=",m)
+        if tab[m]==x:  # si la valeur est trouvée  on quitte la boucle while()
+            g=m
+            break
+        if tab[m]>x:
+            d=m
+        else:
+            g=m
+    print("g=",g,"d=",d,"m=",m)
+    return g
+
+"Recherche séquentielle dite naïve"
+def recherche(x:int,tab:[float]):
+    # renvoie l'indice de l'élément de la liste tab qui vaut x, méthode naïve
+    i=0
+    while(tab[i]!=x):
+        i=i+1
+        print("Itération n°:",i)
+    return i
+
+listetriee=[0,2,3,5,6,8,9,10,15,16,17,20,23,25,29,32,35,38,39,41,45,48,50,51,52,56,65,68,75,80,81,90]
+val=81
+s=dicho_liste_triée(val,listetriee)     
+print("L'indice contenant x =",val,"est",s)
+s=recherche(val,listetriee)
+print("L'indice contenant x =",val,"est",s)

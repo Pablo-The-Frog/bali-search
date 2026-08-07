@@ -1,0 +1,34 @@
+# -*- coding: utf-8 -*-
+"""Résolution équation de fermeture géométrique"""
+
+from numpy import sin,cos,pi,linspace
+
+a=60;b=430;d=115;e=35;l=490
+
+def f(teta:float): #teta en °
+    # Renvoie f(teta): float connaissant tetar
+    teta=teta*pi/180 
+    res=cos(teta)*(-2*a*d+2*e*d*cos(tetar))+sin(teta)*(-2*b*d+2*e*d*sin(tetar))-(l**2 -(a**2+b**2+e**2+d**2)+ 2*a*e*cos(tetar)+2*b*e*sin(tetar))
+    return res
+
+def dichotomie(f,a:float,b:float,epsilon:float):
+    # Renvoie la valeur approchée de x0 tel que f(x0)=0
+    # Entrées: f est une fonction au sens mathématique
+    # a et b sont les bornes inférieure et supérieure
+    # epsilon est la précision sur la valeur de x0
+    # Renvoie une erreur si l'encadrement est mal choisi
+    # Pour fonction croissante ou décroissante
+    assert f(a)*f(b)<0  
+    pente= f(b)>f(a)
+    while (b-a)>epsilon:
+        y0= f((b+a)/2)
+        if (y0>0 and pente == True) or (y0<0 and pente == False):
+            b=(b+a)/2 
+        else:
+            a=(b+a)/2
+    return (a+b)/2
+
+X_tetar=linspace(-90, 90, 180) 
+Y_tetad=[] 
+# Boucle principale à compléter
+ 
