@@ -1,0 +1,263 @@
+:root {
+    --bg: #07090e;
+    --card: rgba(18, 22, 31, 0.65);
+    --card-hover: rgba(28, 35, 49, 0.85);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(0, 229, 255, 0.4);
+    --text: #f0f4f8;
+    --text-dim: #6272a4;
+    --cyan: #00e5ff;
+    --emerald: #00e676;
+    --glow: rgba(0, 229, 255, 0.15);
+    --blur: blur(12px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'JetBrains Mono', 'Fira Code', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    background-image:
+    radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 32px 32px, 32px 32px;
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    background: rgba(7, 9, 14, 0.8);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+}
+
+#back {
+background: var(--card);
+border: 1px solid var(--border);
+color: var(--cyan);
+padding: 8px 16px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 13px;
+font-weight: 600;
+font-family: inherit;
+display: none;
+transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#back:hover {
+border-color: var(--cyan);
+box-shadow: 0 0 12px var(--glow);
+transform: translateX(-2px);
+}
+
+#title {
+font-size: 18px;
+font-weight: 700;
+letter-spacing: -0.5px;
+color: var(--text);
+text-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+
+#content {
+padding: 24px 16px;
+max-width: 850px;
+margin: 0 auto;
+}
+
+.section {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin: 28px 0 12px 4px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--card);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.item:hover {
+    border-color: var(--border-accent);
+    background: var(--card-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 15px var(--glow);
+}
+
+.icon {
+    font-size: 18px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.9;
+}
+
+.name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 229, 255, 0.15);
+}
+
+.item[data-type="file"] .meta {
+    color: var(--text-dim);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--border);
+}
+
+.empty {
+    text-align: center;
+    color: var(--text-dim);
+    margin-top: 80px;
+    font-size: 14px;
+    border: 1px dashed var(--border);
+    padding: 40px;
+    border-radius: 12px;
+}
+
+
+/* ==========================================================================
+ *  RESET & VIEWPORT DYNAMIQUE MULTI-DEVICE
+ *  ========================================================================== */
+
+:root {
+    --bg: #07090e;
+    --card: rgba(18, 22, 31, 0.65);
+    --card-hover: rgba(28, 35, 49, 0.85);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(0, 229, 255, 0.4);
+    --text: #f0f4f8;
+    --text-dim: #6272a4;
+    --cyan: #00e5ff;
+    --glow: rgba(0, 229, 255, 0.15);
+    --blur: blur(12px);
+
+    /* Hauteur dynamique exacte du viewport (dvh = Dynamic Viewport Height) */
+    --app-height: 100dvh;
+}
+
+/* Fallback pour les vieux moteurs de rendu préhistoriques */
+@supports not (height: 100dvh) {
+    :root {
+        --app-height: 100vh;
+    }
+}
+
+html, body {
+    width: 100%;
+    height: var(--app-height);
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Verrouille le scroll global du body */
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace, system-ui;
+    background-color: var(--bg);
+    background-image:
+    radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 32px 32px, 32px 32px;
+    color: var(--text);
+
+    /* Structure en colonne sur toute la hauteur visible */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header fixe en haut */
+header {
+    flex-shrink: 0; /* Ne rétrécit jamais */
+    height: 60px;
+    background: rgba(7, 9, 14, 0.85);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+}
+
+/* Main container : prend TOUT l'espace restant et gère le scroll interne */
+main#content, #content {
+    flex: 1; /* Remplit l'espace vertical disponible entre le header et le bas */
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 16px;
+
+    /* Le scroll se fait UNIQUEMENT dans ce conteneur si la liste dépasse */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Momentum scroll fluide sur iOS */
+}
+
+/* Personnalisation de la barre de défilement pour ne pas détruire le design */
+#content::-webkit-scrollbar {
+width: 6px;
+}
+
+#content::-webkit-scrollbar-track {
+background: transparent;
+}
+
+#content::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.15);
+border-radius: 3px;
+}
+
+#content::-webkit-scrollbar-thumb:hover {
+background: var(--cyan);
+}
